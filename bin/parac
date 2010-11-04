@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+# coding=utf-8
+
+import parachallenge
+import sys
+import re
+
+
+name_l = re.compile("Nom\\s*:(?P<name>.*)")
+difficulty_l = re.compile("Difficult.\\s*:(?P<difficulty>.*)")
+description_start_l = re.compile("Description\\s*:(?P<description>.*)")
+waypt_start_l = re.compile("Balises\\s*:")
+
+waypt_l = re.compile("\\s*-\\s*(?P<lat>[^,]+),(?P<lon>[^ ]+) (?P<name>.*)")
+
+NAME=0
+DIFF=1
+DESCR=2
+DESCR_CONT=3
+WAYPT=4
+
+def main(argv):
+    fin = open(argv[1])
+
+    (name,diff,descr,waypts) = (None, None, "", [])
+    state = NAME
+    
+    for l in fin.xreadlines():
+	l = l.strip()
+	if l == "":
+	    continue
+
+	if state == NAME:
+	    m = name_l.match(l)
+	    if m == None:
+		print "expecting name, got :" + l
+		sys.exit(255)
+	    else:
+		name = m.group("name")
+		state = DIFF
+	elif state == DIFF:
+	    m = difficulty_l.match(l)
+	    if m == None:
+		print "expecting difficulty, got : " + l
+		sys.exit(255)
+	    else:
+		diff = m.group("difficulty")
+		state = DESCR
+	elif state == DESCR:
+	    m = description_start_l.match(l)
+	    if m == None:
+		print "expecting description, got : " + l
+		sys.exit(255)
+	    else:
+		descr = m.group("description")
+		state = DESCR_CONT
+	elif state == DESCR_CONT:
+	    m = waypt_start_l.match(l)
+	    if m == None:
+		descr += l
+	    else:
+		state = WAYPT
+	elif state == WAYPT:
+	    m = waypt_l.match(l)
+	    if m == None:
+		print "expecting waypoint, got : " + l
+		sys.exit(255)
+	    else:
+		waypts.append(parachallenge.Waypoint(m.group("lat"), m.group("lon"), m.group("name")))
+
+    c = parachallenge.Cross(name,diff,descr,waypts)
+    print c
+	
+    
+if __name__ == '__main__':
+    main(sys.argv)
