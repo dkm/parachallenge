@@ -1,0 +1,1 @@
+cd grammar && antlr3 -o ../build parachallenge.g
