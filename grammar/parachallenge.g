@@ -1,6 +1,8 @@
 grammar parachallenge;
 options {
-	output=AST;
+	output=AST;   
+	 language=Python;
+	
 //	backtrack=true;
 //	memoize=true;
 } 
@@ -9,10 +11,9 @@ tokens {
 	DISTANCE;
 	WPTS;
 	WPT;
-	TAKEOFF;
-	LANDING;
 	UTM_COORDS;
 	DIFFICULTY;
+    TEXT;
 }
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -68,11 +69,12 @@ UNICODE_ESC
 string_to_eol 
 	:	 ( options {greedy=false;} : . )* '\n'! ;
 
-title	:  string_to_eol;
+title	:  string_to_eol -> ^(TEXT string_to_eol);
 
 
 subtitle 
-	:	 string_to_eol;
+	:	 string_to_eol -> ^(TEXT string_to_eol);
+
 
 distance:	'distance' ':' INT? '\n' -> ^(DISTANCE INT?);
 
@@ -82,10 +84,11 @@ difficulty
 utm_coords
 	:	(n=INT|n=FLOAT) 'N' (e=INT|e=FLOAT) 'E' t=INT'T'-> ^(UTM_COORDS $n $e $t);
 	
-takeoff	:	'Deco' ':' utm_coords string_to_eol -> ^(TAKEOFF utm_coords string_to_eol);
+takeoff	:	'Deco' ':' utm_coords string_to_eol 
+          -> ^(WPT utm_coords ^(TEXT string_to_eol));
 
 waypoint:	
-	'-' utm_coords string_to_eol -> ^(WPT utm_coords string_to_eol);
+	'-' utm_coords string_to_eol -> ^(WPT utm_coords ^(TEXT string_to_eol));
 	
 waypoints
 	:	'Balises' ':' '\n'
@@ -93,7 +96,8 @@ waypoints
 	        	-> ^(WPTS waypoint+)
 	;
 
-landing	:	'Atterro' ':' utm_coords string_to_eol -> ^(LANDING utm_coords);
+landing	:	'Atterro' ':' utm_coords string_to_eol 
+        -> ^(WPT utm_coords ^(TEXT string_to_eol));          
 
 fiche	:	
 	title
@@ -102,6 +106,5 @@ fiche	:
 	difficulty
 	takeoff
 	waypoints
-	landing
+	landing 
 	;
-	
