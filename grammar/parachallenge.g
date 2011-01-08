@@ -74,10 +74,10 @@ title	:  string_to_eol;
 subtitle 
 	:	 string_to_eol;
 
-distance:	'Kilometrage (hors bonus)' ':' INT? '\n' -> ^(DISTANCE INT?);
+distance:	'distance' ':' INT? '\n' -> ^(DISTANCE INT?);
 
 difficulty 
-	:	 'Degre de difficulte' ':' INT? '\n' -> ^(DIFFICULTY INT?);
+	:	 'difficulte' ':' INT? '\n' -> ^(DIFFICULTY INT?);
 
 utm_coords
 	:	(n=INT|n=FLOAT) 'N' (e=INT|e=FLOAT) 'E' t=INT'T'-> ^(UTM_COORDS $n $e $t);
