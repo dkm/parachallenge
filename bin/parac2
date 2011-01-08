@@ -1,0 +1,106 @@
+#!/usr/bin/env python
+
+import antlr3
+import parachallenge
+import sys
+import re
+from parachallengeParser import parachallengeParser
+from parachallengeLexer import parachallengeLexer
+
+
+from pyproj import Proj
+
+def getListOfWptsFromTree(wpts_tree):
+    if wpts_tree.getToken().text != 'WPTS':
+        print >>sys.stderr, "not an WPTS node"
+        print >>sys.stderr, wpts_tree.getToken().text
+        sys.exit(-1)
+        
+    wpts = []
+    for i in xrange(wpts_tree.getChildCount()):
+        w = getWaypointFromWPTTree(wpts_tree.getChild(i))
+        wpts.append(w)
+    return wpts
+                                   
+    
+def getLatLonCoordsFromUTMTree(utm_tree):
+    if utm_tree.getToken().text != 'UTM_COORDS':
+        print >>sys.stderr, "not an UTM node"
+        print >>sys.stderr, utm_tree.getToken().text
+        sys.exit(-1)
+
+    if utm_tree.getChildCount() != 3:
+        print >>sys.stderr, "not a valid UTM node"
+        print >>sys.stderr, utm_tree.getChildCount(), utm_tree.getChild(0).getToken().text
+        1./0.0
+        
+        sys.exit(-1)
+
+    n = utm_tree.getChild(0).getToken().text
+    e = utm_tree.getChild(1).getToken().text
+    t = utm_tree.getChild(2).getToken().text
+
+    utm33 = Proj(proj='utm',zone=t)
+    lat,lon = utm33(float(n), float(e), inverse=True)
+    return (lat,lon)
+
+def getWaypointFromWPTTree(wpt_tree):
+    if wpt_tree.getToken().text != 'WPT':
+        print >>sys.stderr, "not a WPT node"
+        print >>sys.stderr, wpt_tree.getToken().text
+        sys.exit(-1)
+
+    if wpt_tree.getChildCount() != 2:
+        print >>sys.stderr, "not a valid WPT node"
+        print >>sys.stderr, wpt_tree.getChildCount()
+        sys.exit(-1)
+        
+    name = getStringFromTextTree(wpt_tree.getChild(1))
+    lat,lon = getLatLonCoordsFromUTMTree(wpt_tree.getChild(0))
+    return parachallenge.Waypoint(lat,lon,name)
+
+def getStringFromTextTree(text_tree):
+    if text_tree.getToken().text != 'TEXT':
+        print >>sys.stderr, "not a TEXT node."
+        print >>sys.stderr, text_tree.getToken().text
+        sys.exit(-1)
+    s = ""
+    for i in xrange(text_tree.getChildCount()):
+        s += text_tree.getChild(i).getToken().text + " "
+    return s
+
+finput = open(sys.argv[1])
+char_stream = antlr3.ANTLRStringStream(finput.read())
+# or to parse a file:
+# char_stream = antlr3.ANTLRFileStream(path_to_input)
+# or to parse an opened file or any other file-like object:
+# char_stream = antlr3.ANTLRInputStream(file)
+
+lexer = parachallengeLexer(char_stream)
+tokens = antlr3.CommonTokenStream(lexer)
+parser = parachallengeParser(tokens)
+root = parser.fiche().tree
+
+title = getStringFromTextTree(root.getChild(0))
+subtitle = getStringFromTextTree(root.getChild(1))
+distance_tree = root.getChild(2)
+
+if distance_tree.getChildCount() == 0:
+    distance = -1
+else:
+    distance = distance_tree.getChild(0).getToken().text
+
+diff_tree = root.getChild(3)
+if diff_tree.getChildCount() == 0:
+    difficulty = "NS"
+else:
+    difficulty = diff_tree.getChildCount().getToken().text
+
+takeoff = getWaypointFromWPTTree(root.getChild(4))
+
+wpts = getListOfWptsFromTree(root.getChild(5))
+
+landing = getWaypointFromWPTTree(root.getChild(6))
+
+c = parachallenge.Cross(title, difficulty, subtitle, takeoff, landing, wpts)
+print c
