@@ -7,7 +7,6 @@ import re
 from parachallengeParser import parachallengeParser
 from parachallengeLexer import parachallengeLexer
 
-
 from pyproj import Proj
 
 def getListOfWptsFromTree(wpts_tree):
@@ -104,4 +103,10 @@ wpts = getListOfWptsFromTree(root.getChild(5))
 landing = getWaypointFromWPTTree(root.getChild(6))
 
 c = parachallenge.Cross(title, difficulty, subtitle, takeoff, landing, wpts)
-print c
+
+rstout = open('%s.rst' % sys.argv[1], 'w')
+kmlout = open('%s.kml' % sys.argv[1], 'w')
+
+print >>rstout, c.toRST()
+
+print >>kmlout, c.toKML()
