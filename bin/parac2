@@ -40,8 +40,9 @@ def getLatLonCoordsFromUTMTree(utm_tree):
     e = utm_tree.getChild(1).getToken().text
     t = utm_tree.getChild(2).getToken().text
 
-    utm33 = Proj(proj='utm',zone=t)
-    lat,lon = utm33(float(n), float(e), inverse=True)
+    utm = Proj(proj='utm',zone=t)
+    
+    lon,lat = utm(float(e), float(n), inverse=True)
     return (lat,lon)
 
 def getWaypointFromWPTTree(wpt_tree):
