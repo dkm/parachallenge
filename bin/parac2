@@ -70,7 +70,7 @@ def getStringFromTextTree(text_tree):
     return s
 
 finput = open(sys.argv[1])
-char_stream = antlr3.ANTLRStringStream(finput.read())
+char_stream = antlr3.ANTLRStringStream(finput.read().decode('latin-1'))
 # or to parse a file:
 # char_stream = antlr3.ANTLRFileStream(path_to_input)
 # or to parse an opened file or any other file-like object:
