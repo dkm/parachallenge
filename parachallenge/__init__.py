@@ -1,55 +1,51 @@
 #!/usr/bin/env python
-# coding=utf-8
+# -*- coding: utf-8 -*-
+#
+#   parachallenge
+#   Copyright (C) 2010  Marc Poulhiès
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import math
 
 import makemaps
+import pyproj
+import re
+import ConfigParser
 
-def distance_on_unit_sphere(lat1, long1, lat2, long2):
-    """
-    taken from http://www.johndcook.com/python_longitude_latitude.html
-    """
+UTM_RE = re.compile("(?P<lon>\d+(\.\d*)?)\s*N\s*(?P<lat>\d+(\.\d*)?)\s*E\s*(?P<zone>\d+)\s*T\s*")
 
-    # Convert latitude and longitude to 
-    # spherical coordinates in radians.
-    degrees_to_radians = math.pi/180.0
-        
-    # phi = 90 - latitude
-    phi1 = (90.0 - lat1)*degrees_to_radians
-    phi2 = (90.0 - lat2)*degrees_to_radians
-        
-    # theta = longitude
-    theta1 = long1*degrees_to_radians
-    theta2 = long2*degrees_to_radians
-        
-    # Compute spherical distance from spherical coordinates.
-        
-    # For two locations in spherical coordinates 
-    # (1, theta, phi) and (1, theta, phi)
-    # cosine( arc length ) = 
-    #    sin phi sin phi' cos(theta-theta') + cos phi cos phi'
-    # distance = rho * arc length
-    
-    cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + 
-           math.cos(phi1)*math.cos(phi2))
-    arc = math.acos( cos )
-
-    # Remember to multiply arc by the radius of the earth 
-    # in your favorite set of units to get length.
-    return arc * 6373
-
+WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
 class Waypoint:
-    def __init__(self, lat, lon, name):
-        self.lat = lat
-        self.lon = lon
+    def __init__(self, name, coords):
+        self.coords = coords
         self.name = name
 
     def distance_to(self, other):
-        return distance_on_unit_sphere(self.lat, self.lon, other.lat, other.lon)
+        fwd,back,dist = WGS84_GEOD.inv(self.coords[0], self.coords[1],
+                                       other.coords[0], other.coords[1])
+        return dist
 
-    def __str__(self):
-        return str(self.lat) + ", " + str(self.lon)+ " | " + self.name
+    def __unicode__(self):
+        return unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
+        
+    def __getattr__(self, name):
+        if name == 'lon':
+            return self.coords[0]
+        elif name == 'lat':
+            return self.coords[1]
         
 class Cross:
     def __init__(self, name, difficulty, description, 
@@ -62,22 +58,23 @@ class Cross:
         self.landing = landing
         self.distance = -1
 
-    def __str__(self):
+    def __unicode__(self):
         if self.distance == -1:
             self.compute_distance()
 
-        retstr =  "Name:" + self.name + "/"
-        retstr += "Difficulté:" + self.difficulty + "/"
-        retstr += "Distance:" + str(self.distance) + "/"
-        retstr += "Description:" + self.description + "/"
-        retstr += "Deco:" + str(self.takeoff)
-        retstr += "Balises:"+ "/".join([str(x) for x in self.waypoints])
-        retstr += "Atterro:" + str(self.landing)
+        retstr =  u"Name:" + self.name + u"/"
+        retstr += u"Difficulte:" + self.difficulty + u"/"
+        retstr += u"Distance:" + unicode(self.distance) + u"/"
+        retstr += u"Description:" + self.description + u"/"
+        retstr += u"Deco:" + unicode(self.takeoff)
+        retstr += u"Balises:"+ "/".join([unicode(x) for x in self.waypoints])
+        retstr += u"Aterro:" + unicode(self.landing)
         return retstr
 
     def compute_distance(self):
         prev_wpt = self.takeoff
         d = 0
+        prev_p = self.takeoff
 
         for p in self.waypoints:
             d += prev_wpt.distance_to(p) 
@@ -126,15 +123,58 @@ class Cross:
 
         r += 'Trajet\n'
         r += "-"*(len('Trajet\n')-1) + '\n'
-        r += '- Decolage : ' + str(self.takeoff) + '\n'
+        r += '- Decolage : ' + unicode(self.takeoff) + '\n'
         
         i = 1
         p = self.takeoff
         for w in self.waypoints:
-            r += ' - B%d:' % i + " " + str(w) +'(%.2f km)\n' % p.distance_to(w)
+            r += ' - B%d:' % i + " " + unicode(w) +'(%.2f km)\n' % p.distance_to(w)
             i += 1
             p = w
         
-        r += '- Atterissage : ' + str(self.landing) + '(%.2f km)\n' % self.landing.distance_to(p)
+        r += '- Atterissage : ' + unicode(self.landing) + '(%.2f km)\n' % self.landing.distance_to(p)
 
-        return r
+        return r.encode('utf-8')
+
+def unpackUTM(utmstring):
+    m = UTM_RE.match(utmstring)
+    if m:
+        return getLatLonFromUTM(m.group('lon'), m.group('lat'), m.group('zone'))
+    else:
+        print "Can't match UTM in '%s'" %utmstring
+        return None
+
+def getLatLonFromUTM(easting, northing, zone):
+    utm = pyproj.Proj(proj='utm', zone=zone)
+    
+    lon,lat = utm(float(easting), float(northing), inverse=True)
+    
+    return (lon,lat)
+
+def loadFromIni(filename, debug=False):
+    config = ConfigParser.ConfigParser()
+    config.read(filename)
+
+    titre = config.get('general', 'titre').decode("iso-8859-15")
+    descr = config.get('general', 'description').decode("iso-8859-15")
+    ##diff = config.get('general', 'difficulté').decode("iso-8859-15")
+    diff = u""
+    for name,val in config.items('general'):
+        if name.decode("iso-8859-15").startswith(u'difficult'):
+            diff = val.decode("iso-8859-15")
+            break
+
+    if debug and not diff:
+        print "WARNING: No difficulty"
+    
+    deco_str = config.get('trajet', 'deco').decode("iso-8859-15")
+    atterro_str = config.get('trajet', 'atterro').decode("iso-8859-15")
+    
+    deco_utm_str, deco_name = [x.strip() for x in deco_str.split('|')]
+    atterro_utm_str, atterro_name = [x.strip() for x in atterro_str.split('|')]
+
+    deco = Waypoint(deco_name, unpackUTM(deco_utm_str))
+    atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str))
+
+    c = Cross(titre, diff, descr, deco, atterro, [])
+    return c
