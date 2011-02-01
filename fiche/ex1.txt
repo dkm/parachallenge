@@ -1,7 +1,0 @@
-Nom: Saint Eynard
-Difficulté: 1
-Description: Super ballade le long de la crête à mouettes
-Balises:
- - 34,45 Saint Hil
- - 33,55 Fort Saint Eynard
- - 32,22 Saint Hil
