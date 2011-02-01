@@ -36,7 +36,7 @@ class Waypoint:
     def distance_to(self, other):
         fwd,back,dist = WGS84_GEOD.inv(self.coords[0], self.coords[1],
                                        other.coords[0], other.coords[1])
-        return dist
+        return dist/1000.0
 
     def __unicode__(self):
         return unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
@@ -113,7 +113,7 @@ class Cross:
 
         r = ""
         r += self.name + "\n"
-        r += '='*(len(self.name)-1) + '\n'
+        r += '='*(len(self.name)) + '\n'
 
         r += '-' + ' ' + 'Difficulty: ' + self.difficulty + '\n'
         r += '-' + ' ' + 'Distance: ' + "%.2f" % self.distance + ' km\n\n'
@@ -131,8 +131,10 @@ class Cross:
             r += ' - B%d:' % i + " " + unicode(w) +'(%.2f km)\n' % p.distance_to(w)
             i += 1
             p = w
-        
+        r += "\n"
+
         r += '- Atterissage : ' + unicode(self.landing) + '(%.2f km)\n' % self.landing.distance_to(p)
+        r += "\n"
 
         return r.encode('utf-8')
 
@@ -176,5 +178,15 @@ def loadFromIni(filename, debug=False):
     deco = Waypoint(deco_name, unpackUTM(deco_utm_str))
     atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str))
 
-    c = Cross(titre, diff, descr, deco, atterro, [])
+    waypoints = []
+    for name,val in config.items('trajet'):
+        name = name.decode("iso-8859-15")
+        val = val.decode("iso-8859-15")
+        m = re.match("b(?P<idx>\d+)", name)
+        if m:
+            b_utm_str, b_name = [x.strip() for x in val.split('|')]
+            waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
+                                      unpackUTM(b_utm_str)))
+
+    c = Cross(titre, diff, descr, deco, atterro, waypoints)
     return c
