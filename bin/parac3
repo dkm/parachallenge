@@ -20,18 +20,29 @@
 import parachallenge
 import pyproj
 import sys
+import os
 
-
-fiche_in = sys.argv[1]
+fiches = {}
 
 for i in sys.argv[1:]:
     cross = parachallenge.loadFromIni(i)
-    
-    kmlout = open('build-kml/%s.kml' % i.replace('/', '__'), 'w')
-    rstout = open('build-rst/%s.rst' % i.replace('/', '__'), 'w')
+    basename = ".".join(i.split(".")[:-1])
+
+    fiches[cross.name] = [cross, 
+                          basename.replace('/', '__'),
+                          'build-kml/%s.kml' % basename.replace('/', '__'),
+                          'build-rst/%s.rst' % basename.replace('/', '__')]
+
+    kmlout = open('final/build-kml/%s.kml' % basename.replace('/', '__'), 'w')
+    rstout = open('final/build-rst/%s.rst' % basename.replace('/', '__'), 'w')
 
     print >>kmlout, cross.toKML()
     print >>rstout, cross.toRST()
 
     kmlout.close()
     rstout.close()
+
+for k,l in fiches.items():
+    fiche_pdf = 'build-pdf/%s.pdf' % l[1]
+    pdf_rst = "rst2pdf final/%s -o final/%s " %( l[3], fiche_pdf)
+    os.system(pdf_rst)
