@@ -123,7 +123,7 @@ class Cross:
 
         r += 'Trajet\n'
         r += "-"*(len('Trajet\n')-1) + '\n'
-        r += '- Decolage : ' + unicode(self.takeoff) + '\n'
+        r += '- Decolage : ' + unicode(self.takeoff) + '\n\n'
         
         i = 1
         p = self.takeoff
@@ -131,7 +131,9 @@ class Cross:
             r += ' - B%d:' % i + " " + unicode(w) +'(%.2f km)\n' % p.distance_to(w)
             i += 1
             p = w
-        r += "\n"
+
+        if len(self.waypoints)>0:
+            r += "\n"
 
         r += '- Atterissage : ' + unicode(self.landing) + '(%.2f km)\n' % self.landing.distance_to(p)
         r += "\n"
