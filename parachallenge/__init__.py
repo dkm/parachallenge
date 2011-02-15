@@ -24,7 +24,7 @@ import pyproj
 import re
 import ConfigParser
 
-UTM_RE = re.compile("(?P<lon>\d+(\.\d*)?)\s*N\s*(?P<lat>\d+(\.\d*)?)\s*E\s*(?P<zone>\d+)\s*T\s*")
+UTM_RE = re.compile("(?P<lat>\d+(\.\d*)?)\s*N\s*(?P<lon>\d+(\.\d*)?)\s*E\s*(?P<zone>\d+)\s*T\s*")
 
 WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
