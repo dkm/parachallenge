@@ -19,6 +19,7 @@
 
 import math
 
+from Cheetah.Template import Template
 import makemaps
 import pyproj
 import re
@@ -29,9 +30,10 @@ UTM_RE = re.compile("(?P<lat>\d+(\.\d*)?)\s*N\s*(?P<lon>\d+(\.\d*)?)\s*E\s*(?P<z
 WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
 class Waypoint:
-    def __init__(self, name, coords):
+    def __init__(self, name, coords, points=0):
         self.coords = coords
         self.name = name
+        self.points = points
 
     def distance_to(self, other):
         fwd,back,dist = WGS84_GEOD.inv(self.coords[0], self.coords[1],
@@ -40,7 +42,10 @@ class Waypoint:
 
     def __unicode__(self):
         return unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
-        
+    
+    def __str__(self):
+        return self.__unicode__.encode("utf-8")
+
     def __getattr__(self, name):
         if name == 'lon':
             return self.coords[0]
@@ -57,6 +62,7 @@ class Cross:
         self.takeoff = takeoff
         self.landing = landing
         self.distance = -1
+        self.points = 0
 
     def __unicode__(self):
         if self.distance == -1:
@@ -65,22 +71,29 @@ class Cross:
         retstr =  u"Name:" + self.name + u"/"
         retstr += u"Difficulte:" + self.difficulty + u"/"
         retstr += u"Distance:" + unicode(self.distance) + u"/"
+        retstr += u"Points:" + unicode(self.points) + u"/"
         retstr += u"Description:" + self.description + u"/"
         retstr += u"Deco:" + unicode(self.takeoff)
         retstr += u"Balises:"+ "/".join([unicode(x) for x in self.waypoints])
         retstr += u"Aterro:" + unicode(self.landing)
         return retstr
 
+    def __str__(self):
+        return self.__unicode__.encode("utf-8")
+
     def compute_distance(self):
         prev_wpt = self.takeoff
         d = 0
+        points = 0
         prev_p = self.takeoff
 
         for p in self.waypoints:
-            d += prev_wpt.distance_to(p) 
+            d += prev_wpt.distance_to(p)
+            points += p.points
             prev_p = p
         d += prev_p.distance_to(self.landing)
         self.distance = d
+        self.points = points
     
     def toKML(self):
         kml_doc = makemaps.create_document(self.name,
@@ -95,15 +108,21 @@ class Cross:
         style_doc = makemaps.create_style('Orange',
            'http://maps.google.com/mapfiles/kml/paddle/wht-blank.png')
         document.appendChild(style_doc.documentElement)
-        placemark = makemaps.create_placemark(self.takeoff)
+
+        placemark = makemaps.create_placemark(self.takeoff, "takeoff")
         document.appendChild(placemark.documentElement)
-        
+        prev = self.takeoff
+
         for w in self.waypoints:
-            placemark = makemaps.create_placemark(w)
+            dist = prev.distance_to(w)
+            placemark = makemaps.create_placemark(w, dist=dist)
             document.appendChild(placemark.documentElement)
 
-        placemark = makemaps.create_placemark(self.landing)
+        placemark = makemaps.create_placemark(self.landing, "landing")
         document.appendChild(placemark.documentElement)
+
+        ls = makemaps.create_linestring([self.takeoff] + self.waypoints + [self.landing])
+        document.appendChild(ls.documentElement)
 
         return kml_doc.toprettyxml(indent="  ", encoding='UTF-8')
 
@@ -116,7 +135,8 @@ class Cross:
         r += '='*(len(self.name)) + '\n'
 
         r += '-' + ' ' + 'Difficulty: ' + self.difficulty + '\n'
-        r += '-' + ' ' + 'Distance: ' + "%.2f" % self.distance + ' km\n\n'
+        r += '-' + ' ' + 'Distance: ' + "%.2f" % self.distance + ' km\n'
+        r += '-' + ' ' + 'Points: ' + "%d" % self.points + '\n\n'
         r += 'Description\n'
         r += "-"*(len('Description\n')-1) + '\n'
         r += self.description + '\n\n'
@@ -128,7 +148,7 @@ class Cross:
         i = 1
         p = self.takeoff
         for w in self.waypoints:
-            r += ' - B%d:' % i + " " + unicode(w) +'(%.2f km)\n' % p.distance_to(w)
+            r += ' - B%d:' % i + " " + unicode(w) +'(%.2f km / %d pts)\n' % (p.distance_to(w), p.points)
             i += 1
             p = w
 
@@ -139,6 +159,15 @@ class Cross:
         r += "\n"
 
         return r.encode('utf-8')
+
+
+    def toHTML(self, kmlfile, pdffile):
+        t = Template(file='templates/fiche.cheetah')
+        t.cross = self
+        t.kmlfile = kmlfile
+        t.pdffile = pdffile
+        return t
+
 
 def unpackUTM(utmstring):
     m = UTM_RE.match(utmstring)

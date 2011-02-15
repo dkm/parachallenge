@@ -87,6 +87,42 @@ def create_document(title, description=''):
     document.appendChild(docDesc)
     docDesc_text = doc.createTextNode(description)
     docDesc.appendChild(docDesc_text)
+
+    style_doc = create_style('takeoff', 
+                             'http://maps.google.com/mapfiles/kml/paddle/wht-stars.png')
+    document.appendChild(style_doc.documentElement)
+
+    style_doc = create_style('waypoint', 
+                             'http://maps.google.com/mapfiles/kml/paddle/wht-blank.png')
+    document.appendChild(style_doc.documentElement)
+
+    style_doc = create_style('landing', 
+                             'http://maps.google.com/mapfiles/kml/paddle/red-stars.png')
+    document.appendChild(style_doc.documentElement)
+
+    line_style = create_linestyle("trackstyle")
+    document.appendChild(line_style.documentElement)
+
+    return doc
+
+def create_linestyle(style_id):
+    doc = xml.dom.minidom.Document()
+    
+    mstyle = doc.createElement("Style")
+    mstyle.setAttribute("id", style_id)
+    doc.appendChild(mstyle)
+    
+    style = doc.createElement("LineStyle")
+    mstyle.appendChild(style)
+
+    color = doc.createElement("color")
+    style.appendChild(color)
+    col_text = doc.createTextNode("ffffffff")
+    color.appendChild(col_text)
+    width = doc.createElement("width")
+    style.appendChild(width)
+    width_text = doc.createTextNode("5")
+    width.appendChild(width_text)
     return doc
 
 def create_style(style_id, icon_href):
@@ -105,41 +141,92 @@ def create_style(style_id, icon_href):
     href.appendChild(href_text)
     return doc
 
-def create_placemark(address):
-    """Generate the KML Placemark for a given address."""
+# def create_placemark(address):
+#     """Generate the KML Placemark for a given address."""
+#     doc = xml.dom.minidom.Document()
+#     pm = doc.createElement("Placemark")
+#     doc.appendChild(pm)
+#     name = doc.createElement("name")
+#     pm.appendChild(name)
+#     name_text = doc.createTextNode('%(name)s' % address)
+#     name.appendChild(name_text)
+#     desc = doc.createElement("description")
+#     pm.appendChild(desc)
+#     desc_text = doc.createTextNode(address.get('phone', ''))
+#     desc.appendChild(desc_text)
+#     if address.get('county', ''):
+#         style_url = doc.createElement("styleUrl")
+#         pm.appendChild(style_url)
+#         style_url_text = doc.createTextNode('#%(county)s' % address)
+#         style_url.appendChild(style_url_text)
+#     pt = doc.createElement("Point")
+#     pm.appendChild(pt)
+#     coords = doc.createElement("coordinates")
+#     pt.appendChild(coords)
+#     coords_text = doc.createTextNode('%(longitude)s,%(latitude)s,0' % address)
+#     coords.appendChild(coords_text)
+#     return doc
+
+
+def create_linestring(points):
+    #     <LineString>
+    #   <tessellate>1</tessellate>
+    #   <coordinates>
+    #     -122.378009,37.830128,0 -122.377885,37.830379,0
+    #   </coordinates>
+    # </LineString>
     doc = xml.dom.minidom.Document()
     pm = doc.createElement("Placemark")
     doc.appendChild(pm)
-    name = doc.createElement("name")
-    pm.appendChild(name)
-    name_text = doc.createTextNode('%(name)s' % address)
-    name.appendChild(name_text)
-    desc = doc.createElement("description")
-    pm.appendChild(desc)
-    desc_text = doc.createTextNode(address.get('phone', ''))
-    desc.appendChild(desc_text)
-    if address.get('county', ''):
-        style_url = doc.createElement("styleUrl")
-        pm.appendChild(style_url)
-        style_url_text = doc.createTextNode('#%(county)s' % address)
-        style_url.appendChild(style_url_text)
-    pt = doc.createElement("Point")
-    pm.appendChild(pt)
+
+    style_url = doc.createElement("styleUrl")
+    pm.appendChild(style_url)
+
+    style_url_text = doc.createTextNode('#trackstyle')
+    style_url.appendChild(style_url_text)
+    pm.appendChild(style_url)
+
+    ls = doc.createElement("LineString")
+    pm.appendChild(ls)
+    
+    tess = doc.createElement("tesselate")
+    ls.appendChild(tess)
+    text = doc.createTextNode("1")
+    tess.appendChild(text)
+
     coords = doc.createElement("coordinates")
-    pt.appendChild(coords)
-    coords_text = doc.createTextNode('%(longitude)s,%(latitude)s,0' % address)
+    ls.appendChild(coords)
+    text = " ".join(['%s,%s,0' %(x.lon, x.lat) for x in points])
+    coords_text = doc.createTextNode(text)
     coords.appendChild(coords_text)
+
     return doc
 
-def create_placemark(waypoint):
+def create_placemark(waypoint, t="waypoint", dist=None):
     """Generate the KML Placemark for a waypoint."""
     doc = xml.dom.minidom.Document()
     pm = doc.createElement("Placemark")
     doc.appendChild(pm)
     name = doc.createElement("name")
     pm.appendChild(name)
-    name_text = doc.createTextNode('%s' % waypoint.name)
+
+    if dist:
+        fulltext = '%s (%d points) %0.2f km' % (waypoint.name, waypoint.points, dist)
+    else:
+        fulltext = '%s (%d points)' % (waypoint.name, waypoint.points)
+
+    if t in ['landing', 'takeoff']:
+        fulltext = '[%s] %s' %(t.upper(), fulltext)
+
+    name_text = doc.createTextNode(fulltext)
     name.appendChild(name_text)
+    style_url = doc.createElement("styleUrl")
+    pm.appendChild(style_url)
+
+    style_url_text = doc.createTextNode('#%s' % t)
+    style_url.appendChild(style_url_text)
+
+
     # desc = doc.createElement("description")
     # pm.appendChild(desc)
     # desc_text = doc.createTextNode(address.get('phone', ''))

@@ -21,6 +21,7 @@ import parachallenge
 import pyproj
 import sys
 import os
+from Cheetah.Template import Template
 
 fiches = {}
 
@@ -31,16 +32,28 @@ for i in sys.argv[1:]:
     fiches[cross.name] = [cross, 
                           basename.replace('/', '__'),
                           'build-kml/%s.kml' % basename.replace('/', '__'),
-                          'build-rst/%s.rst' % basename.replace('/', '__')]
+                          'build-rst/%s.rst' % basename.replace('/', '__'),
+                          'build-html/%s.html' % basename.replace('/', '__')]
 
     kmlout = open('final/build-kml/%s.kml' % basename.replace('/', '__'), 'w')
     rstout = open('final/build-rst/%s.rst' % basename.replace('/', '__'), 'w')
+    htmlout = open('final/build-html/%s.html' % basename.replace('/', '__'), 'w')
 
     print >>kmlout, cross.toKML()
     print >>rstout, cross.toRST()
+    print >>htmlout, cross.toHTML(
+        'http://bordel.kataplop.net/parachallenge/build-kml/%s.kml' % basename.replace('/', '__'),
+        'http://bordel.kataplop.net/parachallenge/build-pdf/%s.pdf' % basename.replace('/', '__'))
 
     kmlout.close()
     rstout.close()
+    htmlout.close()
+
+t = Template(file='templates/index.cheetah')
+t.allcross = fiches
+indexout = open("final/index.html", "w")
+print >>indexout, t
+indexout.close()
 
 for k,l in fiches.items():
     fiche_pdf = 'build-pdf/%s.pdf' % l[1]

@@ -1,0 +1,46 @@
+#encoding UTF-8
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr"
+lang="fr"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>$cross.name</title> 
+</head> 
+<body> 
+<div id="main"> 
+
+<a href="../">Retour à la liste complète</a>
+
+<h1>$cross.name</h1>
+<p>$cross.description</p>
+
+<h2>Résumé</h2>
+<ul>
+  <li>Décolage: $cross.takeoff.name</li>
+  <li>Atterrissage: $cross.landing.name</li>
+#set dist="%.2f" % $cross.distance
+  <li>Distance : $dist km</li>
+  <li>Points : $cross.points</li>
+</ul>
+
+Télécharger la fiche au format :<a href="$kmlfile">[kml]</a> <a href="$pdffile">[pdf]<a>
+<h2>Parcours</h2>
+
+<ul>
+  <li>Décolage: $cross.takeoff.name</li>
+#set $prev=$cross.takeoff
+#for $w in $cross.waypoints
+#set dist="%.2f" % $w.distance_to($prev)
+  <li>$w.name (+$w.points pts) $dist km</li>
+#end for
+  <li>Atterrissage: $cross.landing.name</li>
+</ul>
+
+<h2>Carte</h2>
+<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.fr/?q=$kmlfile&amp;output=embed"></iframe><br /><small><a href="http://maps.google.fr/?q=$kmlfile&amp;source=embed" style="color:#0000FF;text-align:left">View Larger Map</a></small>
+
+</div> <!-- main -->
+</body>
+</html>
