@@ -215,9 +215,15 @@ def loadFromIni(filename, debug=False):
         val = val.decode("iso-8859-15")
         m = re.match("b(?P<idx>\d+)", name)
         if m:
-            b_utm_str, b_name = [x.strip() for x in val.split('|')]
+            vals = [x.strip() for x in val.split('|')]
+            if len(vals) == 3:
+                b_utm_str, b_name, b_points = vals
+            else:
+                b_utm_str, b_name = vals
+                b_points = 0
+
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
-                                      unpackUTM(b_utm_str)))
+                                      unpackUTM(b_utm_str), b_points))
 
     c = Cross(titre, diff, descr, deco, atterro, waypoints)
     return c

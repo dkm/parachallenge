@@ -13,7 +13,7 @@ lang="fr">
 Liste des cross :
 <ul>
 #for $key,$val in $allcross.items()
-<li><a href="$val[4]">$key</a></li>
+<li><a href="$val[4]">$key ($val[0].takeoff.name -&gt; $val[0].landing.name)</a></li>
 #end for
 </ul>
 </div> <!-- main -->
