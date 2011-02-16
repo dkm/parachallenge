@@ -1,0 +1,320 @@
+
+/* -----  basic styles ------------ */
+body {
+    background-color: #424242;
+    font-family: verdana;
+    font-size: 12px
+}
+
+a {
+    color: #CA9619;
+    font-family: verdana;
+    font-size: 12px;
+    text-decoration: none
+}
+
+a:hover {
+    color: #CA9619;
+    text-decoration: underline
+}
+
+h1 {
+    color: #8c0b20;
+    font-family: verdana;
+    font-size: 21px;
+    font-weight: bold
+}
+
+h2 {
+    color: #8c0b20;
+    font-family: verdana;
+    font-size: 18px;
+    font-weight: bold
+}
+
+h3 {
+    color: #8c0b20;
+    font-family: verdana;
+    font-size: 15px;
+    font-weight: bold
+}
+
+p {
+    margin: 15px 15px 5px 0px;
+}
+
+table {
+    table-layout: auto;
+    border-collapse: collapse;
+    border: solid #000000 1px;
+    margin: 5px 15px 5px 15px;
+    width: 280px;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+    width: 50%;
+    height: 20px;
+    border: solid #000000 1px;
+}
+
+th {
+    text-align: center;
+    background-color: #deca72;
+    font-weight: bold;
+    height: 25px;
+    border: solid #000000 1px;
+}
+
+/* ------------ graphics and layout -----------*/
+#top {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 975px;
+    height: 307px;
+    background-image: url('images/top.jpg')
+}
+
+#cart {
+    position: absolute;
+    top: 189px;
+    left: 0px;
+    width: 82px;
+    height: 528px;
+    background-image: url('images/cart.png')
+}
+
+#whitespace {
+    position: absolute;
+    top: 307px;
+    left: 82px;
+    width: 824px;
+    height: 410px;
+    background-color: #ffffff
+}
+
+#footer {
+    position: absolute;
+    top: 718px;
+    left: 0px;
+    width: 906px;
+    height: 100px;
+    background-image: url('images/reflection.png');
+    background-repeat: repeat-x
+}
+
+#header {
+    position: absolute;
+    top: 77px;
+    left: 125px;
+    width: 200px;
+    height: 70px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
+/* ---------------- menu and navigation ------------------- */
+ul.menu {
+    list-style-type: none;
+    position: relative;
+    margin: 0;
+    padding-left: 15px
+}
+
+ul.menu li {
+    padding-top: 0px;
+}
+
+#cart1 {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    width: 60px;
+    height: 120px;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+#cart2 {
+    position: absolute;
+    top: 150px;
+    left: 0px;
+    width: 60px;
+    height: 120px;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+#cart3 {
+    position: absolute;
+    top: 275px;
+    left: 10px;
+    width: 60px;
+    height: 100px;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+#cart4 {
+    position: absolute;
+    top: 400px;
+    left: 15px;
+    width: 60px;
+    height: 120px;
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+#foot {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 10px;
+    color: #80888c;
+    white-space: pre
+}
+
+#copy {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 10px;
+    color: #80888c;
+    white-space: pre
+}
+
+/* ---------------- special styles ------------------- */
+p.title {
+    position: absolute;
+    color: #142b66;
+    font-family: "arial black";
+    font-size: 26px;
+    margin: 0px;
+    padding: 0px
+}
+
+a.foo {
+    color: #80888c;
+    font-family: verdana;
+    font-size: 10px;
+    text-decoration: none
+}
+
+a.foo:hover {
+    color: #3da2dc;
+    text-decoration: none
+}
+
+a.carts {
+    color: #333333;
+    font-family: "arial black";
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a.carts:hover {
+    color: #000000
+}
+
+ul.list {
+    list-style-image: url('images/marker.png');
+    text-align: left;
+    line-height: 150%
+}
+
+/* ------------------ content -------------------- */
+.border1 {
+    position: absolute;
+    top: 60px;
+    right: 5px;
+    height: 30px;
+    width: 207px;
+    background-image: url('images/border1.png')
+}
+
+.border2 {
+    position: absolute;
+    top: 90px;
+    right: 5px;
+    height: 323px;
+    width: 30px;
+    background-image: url('images/border2.png')
+}
+
+.head {
+    margin-top: 35px;
+    margin-left: 30px
+}
+
+#caption {
+    position: absolute;
+    top: 660px;
+    left: 80px;
+    height: 50px;
+    width: 760px;
+    background-color: #ffffff;
+    text-align: center
+}
+
+/*--- two columns layout ---*/
+#column1 {
+    position: absolute;
+    top: 210px;
+    left: 80px;
+    height: 490px;
+    width: 360px
+}
+
+#column2 {
+    position: absolute;
+    top: 210px;
+    left: 480px;
+    height: 490px;
+    width: 360px
+}
+
+.contener2 {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    height: 400px;
+    width: 300px;
+    text-align: justify;
+    overflow: auto
+}
+
+/*--- one column layout---*/
+#column {
+    position: absolute;
+    top: 210px;
+    left: 80px;
+    height: 490px;
+    width: 760px
+}
+
+.contener1 {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    height: 400px;
+    width: 455px;
+    text-align: justify;
+    overflow: auto
+}
+
+.photo {
+    position: absolute;
+    top: 100px;
+    right: 45px;
+    width: 220px
+}
+
+
+
+
+
+
