@@ -1,46 +1,191 @@
 #encoding UTF-8
-<?xml version="1.0" encoding="utf-8"?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr"
-lang="fr"> 
-<head> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<title>$cross.name</title> 
-</head> 
-<body> 
-<div id="main"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+      <title>$cross.name</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="../style/Simple_folder/style.css" />
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="top">
+            <div id="header">
+                <p class="title">
+                    Challenge
+                    <br/>
+                    Intra-Club des Tire-Clous
+                </p>
+            </div>
+        </div>
 
-<a href="../">Retour à la liste complète</a>
+        <div id="cart">
+            <div id="cart1">
+                <a href="../index.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                F
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                C
+                            </li>
+                            <li>
+                                H
+                            </li>
+                            <li>
+                                E
+                            </li>
+                            <li>
+                                S
+                            </li>
 
-<h1>$cross.name</h1>
-<p>$cross.description</p>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart2">
+                <a href="link.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                2
+                            </li>
+                            <li>
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart3">
+                <a href="index.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                3
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart4">
+                <a href="link.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                4
+                            </li>
+                            <li>
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+        </div>
+       <div id="whitespace">
+        </div>
 
-<h2>Résumé</h2>
-<ul>
-  <li>Décolage: $cross.takeoff.name</li>
-  <li>Atterrissage: $cross.landing.name</li>
-#set dist="%.2f" % $cross.distance
-  <li>Distance : $dist km</li>
-  <li>Points : $cross.points</li>
-</ul>
+    <div id="column">
+            <h1 class="head">$cross.name</h1>
+	    <div class="border1">
+            </div>
+            <div class="border2">
+            </div>
+	    <div class="contener1">
+              <br/>
+               
+	      <h2>Résumé</h2>
+	      <ul>
+		<li>Décolage: $cross.takeoff.name</li>
+		<li>Atterrissage: $cross.landing.name</li>
+		#set dist="%.2f" % $cross.distance
+		<li>Distance : $dist km</li>
+		<li>Points : $cross.points</li>
+	      </ul>
 
-Télécharger la fiche au format :<a href="$kmlfile">[kml]</a> <a href="$pdffile">[pdf]<a>
-<h2>Parcours</h2>
 
-<ul>
-  <li>Décolage: $cross.takeoff.name</li>
+	      <p>$cross.description</p>
+
+	      <p>
+		Télécharger la fiche au format
+		:<a href="$kmlfile">[kml]</a> <a href="$pdffile">[pdf]</a>
+	      </p>
+
+	      <h2>Parcours</h2>
+
+	      <ul>
+		<li>Décolage: $cross.takeoff.name</li>
 #set $prev=$cross.takeoff
 #for $w in $cross.waypoints
 #set dist="%.2f" % $w.distance_to($prev)
-  <li>$w.name (+$w.points pts) $dist km</li>
+		<li>$w.name (+$w.points pts) $dist km</li>
 #end for
-  <li>Atterrissage: $cross.landing.name</li>
-</ul>
+		<li>Atterrissage: $cross.landing.name</li>
+	      </ul>
 
-<h2>Carte</h2>
-<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.fr/?q=$kmlfile&amp;output=embed"></iframe><br /><small><a href="http://maps.google.fr/?q=$kmlfile&amp;source=embed" style="color:#0000FF;text-align:left">View Larger Map</a></small>
+            </div>
 
-</div> <!-- main -->
-</body>
+	    <div class="photo">
+	      <iframe width="400" height="350" frameborder="0" scrolling="no"
+		      marginheight="0" marginwidth="0"
+		      src="http://maps.google.fr/?q=$kmlfile&amp;output=embed"></iframe>
+	      <br />
+	      <small>
+		<a href="http://maps.google.fr/?q=$kmlfile&amp;source=embed"
+		   style="color:#0000FF;text-align:left">View Larger Map</a>
+	      </small>
+	    </div>
+    </div>
+
+    <!-- <div id="caption"> -->
+    <!--         A short text may be placed at the bottom of the white space. -->
+    <!-- </div> -->
+
+    <div id="footer">
+      <div id="foot">
+	Created by: <a class="foo" href="http://marketingfix.pl">Marketing Fix</a>
+      </div>
+      <div id="copy">
+        2011 &copy; You
+      </div>
+    </div>
+    </body>
 </html>
