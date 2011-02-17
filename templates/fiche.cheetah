@@ -157,8 +157,11 @@
 #for $w in $cross.waypoints
 #set dist="%.2f" % $w.distance_to($prev)
 		<li>$w.name (+$w.points pts) $dist km</li>
+#set prev=$w
 #end for
-		<li>Atterrissage: $cross.landing.name</li>
+#set dist="%.2f" % $prev.distance_to($cross.landing)
+		<li>Atterrissage: $cross.landing.name (+$cross.landing.points
+		pts) $dist km </li>
 	      </ul>
 
             </div>

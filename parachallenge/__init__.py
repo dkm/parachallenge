@@ -92,6 +92,7 @@ class Cross:
             points += p.points
             prev_p = p
         d += prev_p.distance_to(self.landing)
+        points += self.landing.points
         self.distance = d
         self.points = points
     
