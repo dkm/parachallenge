@@ -1,21 +1,163 @@
 #encoding UTF-8
-<?xml version="1.0" encoding="utf-8"?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr"
-lang="fr"> 
-<head> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<title>Index des cross des Tire-Clous</title> 
-</head> 
-<body> 
-<div id="main"> 
-Liste des cross :
-<ul>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+      <title>Tous les cross</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="style/Simple_folder/style.css" />
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="top">
+            <div id="header">
+                <p class="title">
+                    Challenge
+                    <br/>
+                    Intra-Club des Tire-Clous
+                </p>
+            </div>
+        </div>
+
+        <div id="cart">
+            <div id="cart1">
+                <a href="#" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                F
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                C
+                            </li>
+                            <li>
+                                H
+                            </li>
+                            <li>
+                                E
+                            </li>
+                            <li>
+                                S
+                            </li>
+
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart2">
+                <a href="link.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                2
+                            </li>
+                            <li>
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart3">
+                <a href="index.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                3
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+            <div id="cart4">
+                <a href="link.html" class="carts">
+                    <object>
+                        <ul class="menu">
+                            <li>
+                                L
+                            </li>
+                            <li>
+                                I
+                            </li>
+                            <li>
+                                N
+                            </li>
+                            <li>
+                                K
+                            </li>
+                            <li>
+                                4
+                            </li>
+                            <li>
+                            </li>
+                        </ul>
+                    </object>
+                </a>
+            </div>
+        </div>
+       <div id="whitespace">
+        </div>
+
+    <div id="column">
+            <h1 class="head">All</h1>
+	    <div class="border1">
+            </div>
+            <div class="border2">
+            </div>
+	    <div class="contener1">
+              <br/>
+              <ul>
 #for $key,$val in $allcross.items()
-<li><a href="$val[4]">$key ($val[0].takeoff.name -&gt; $val[0].landing.name)</a></li>
+                 <li>
+		   <a href="$val[4]">
+		     $key ($val[0].takeoff.name -&gt; $val[0].landing.name)
+		   </a>
+		 </li>
 #end for
-</ul>
-</div> <!-- main -->
-</body>
+	      </ul>
+
+            </div>
+
+	    <div class="photo">
+	    </div>
+    </div>
+
+    <!-- <div id="caption"> -->
+    <!--         A short text may be placed at the bottom of the white space. -->
+    <!-- </div> -->
+
+    <div id="footer">
+      <div id="foot">
+	Created by: <a class="foo" href="http://marketingfix.pl">Marketing Fix</a>
+      </div>
+      <div id="copy">
+        2011 &copy; You
+      </div>
+    </div>
+    </body>
 </html>
