@@ -29,6 +29,8 @@ UTM_RE = re.compile("(?P<lat>\d+(\.\d*)?)\s*N\s*(?P<lon>\d+(\.\d*)?)\s*E\s*(?P<z
 
 WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
+FICHE_ENCODING="utf-8"
+
 class Waypoint:
     def __init__(self, name, coords, points=0):
         self.coords = coords
@@ -189,42 +191,50 @@ def loadFromIni(filename, debug=False):
     config = ConfigParser.ConfigParser()
     config.read(filename)
 
-    titre = config.get('general', 'titre').decode("iso-8859-15")
-    descr = config.get('general', 'description').decode("iso-8859-15")
-    ##diff = config.get('general', 'difficulté').decode("iso-8859-15")
+    titre = config.get('general', 'titre').decode(FICHE_ENCODING)
+    descr = config.get('general', 'description').decode(FICHE_ENCODING)
+    ##diff = config.get('general', 'difficulté').decode(FICHE_ENCODING)
     diff = u""
     for name,val in config.items('general'):
-        if name.decode("iso-8859-15").startswith(u'difficult'):
-            diff = val.decode("iso-8859-15")
+        if name.decode(FICHE_ENCODING).startswith(u'difficult'):
+            diff = val.decode(FICHE_ENCODING)
             break
 
     if debug and not diff:
         print "WARNING: No difficulty"
     
-    deco_str = config.get('trajet', 'deco').decode("iso-8859-15")
-    atterro_str = config.get('trajet', 'atterro').decode("iso-8859-15")
+    deco_str = config.get('trajet', 'deco').decode(FICHE_ENCODING)
+    atterro_str = config.get('trajet', 'atterro').decode(FICHE_ENCODING)
     
-    deco_utm_str, deco_name = [x.strip() for x in deco_str.split('|')]
-    atterro_utm_str, atterro_name = [x.strip() for x in atterro_str.split('|')]
+    vals = [x.strip() for x in deco_str.split('|')]
+    if len(vals) == 3:
+        deco_utm_str, deco_name, deco_points = vals
+    else:
+        deco_utm_str, deco_name, deco_points = vals + [0]
 
-    deco = Waypoint(deco_name, unpackUTM(deco_utm_str))
-    atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str))
+    vals = [x.strip() for x in atterro_str.split('|')]
+    if len(vals) == 3:
+        atterro_utm_str, atterro_name, atterro_points = vals
+    else:
+        atterro_utm_str, atterro_name, atterro_points = vals + [0]
+
+    deco = Waypoint(deco_name, unpackUTM(deco_utm_str), int(deco_points))
+    atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str), int(atterro_points))
 
     waypoints = []
     for name,val in config.items('trajet'):
-        name = name.decode("iso-8859-15")
-        val = val.decode("iso-8859-15")
+        name = name.decode(FICHE_ENCODING)
+        val = val.decode(FICHE_ENCODING)
         m = re.match("b(?P<idx>\d+)", name)
         if m:
             vals = [x.strip() for x in val.split('|')]
             if len(vals) == 3:
                 b_utm_str, b_name, b_points = vals
             else:
-                b_utm_str, b_name = vals
-                b_points = 0
+                b_utm_str, b_name, b_points = vals + [0]
 
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
-                                      unpackUTM(b_utm_str), b_points))
+                                      unpackUTM(b_utm_str), int(b_points)))
 
     c = Cross(titre, diff, descr, deco, atterro, waypoints)
     return c
