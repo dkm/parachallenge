@@ -1,3 +1,4 @@
+/* -*- coding: utf-8 -*- */
 <?php
 header("Content-Type: text/plain");
 
@@ -20,7 +21,7 @@ $handle = fopen($fname, "w");
 fwrite($handle, $str);
 fclose($handle);
 
-echo "Pour l'instant, tu as que ça comme retour. Mais ton vol devrait être pris en compte.\n";
-echo "Pour info, garde ça comme «preuve», ça peut aider en cas de bug:\n$fname\n";
+echo "Pour l'instant, tu as que Ã§a comme retour. Mais ton vol devrait Ãªtre pris en compte.\n";
+echo "Pour info, garde Ã§a comme Â«preuveÂ», Ã§a peut aider en cas de bug:\n$fname\n";
 /*header('Location: index.html');*/
 ?>
