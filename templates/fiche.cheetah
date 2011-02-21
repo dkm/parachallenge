@@ -47,23 +47,23 @@
                 </a>
             </div>
             <div id="cart2">
-                <a href="link.html" class="carts">
+                <a href="../results.html" class="carts">
                     <object>
                         <ul class="menu">
+                            <li>
+                                C
+                            </li>
                             <li>
                                 L
                             </li>
                             <li>
-                                I
+                                A
                             </li>
                             <li>
-                                N
+                                S
                             </li>
                             <li>
-                                K
-                            </li>
-                            <li>
-                                2
+                                S
                             </li>
                             <li>
                             </li>
@@ -72,23 +72,23 @@
                 </a>
             </div>
             <div id="cart3">
-                <a href="index.html" class="carts">
+                <a href="../declaration.html" class="carts">
                     <object>
                         <ul class="menu">
+                            <li>
+                                D
+                            </li>
+                            <li>
+                                E
+                            </li>
+                            <li>
+                                C
+                            </li>
                             <li>
                                 L
                             </li>
                             <li>
-                                I
-                            </li>
-                            <li>
-                                N
-                            </li>
-                            <li>
-                                K
-                            </li>
-                            <li>
-                                3
+                                A
                             </li>
                         </ul>
                     </object>

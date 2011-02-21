@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-      <title>Tous les cross</title>
+      <title>Déclaration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="style/Simple_folder/style.css" />
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
@@ -20,7 +20,7 @@
 
         <div id="cart">
             <div id="cart1">
-                <a href="#" class="carts">
+                <a href="index.html" class="carts">
                     <object>
                         <ul class="menu">
                             <li>
@@ -72,7 +72,7 @@
                 </a>
             </div>
             <div id="cart3">
-                <a href="declaration.html" class="carts">
+                <a href="#" class="carts">
                     <object>
                         <ul class="menu">
                             <li>
@@ -124,23 +124,31 @@
         </div>
 
     <div id="column">
-            <h1 class="head">All</h1>
+            <h1 class="head">Formulaire de déclaration</h1>
 	    <div class="border1">
             </div>
             <div class="border2">
             </div>
 	    <div class="contener1">
               <br/>
-              <ul>
+	      <form action="decl.php" method="post">
+		<fieldset>
+		<legend>Cross:</legend>
+		<select name="cross">
 #for $key,$val in $allcross.items()
-                 <li>
-		   <a href="$val[4]">
-		     $key ($val[0].takeoff.name -&gt; $val[0].landing.name)
-		   </a>
-		 </li>
+                   <option value="$val.fid">$val.name</option>
 #end for
-	      </ul>
-
+		</select>
+<br />
+		Jusqu'à la balise : <input type="text" name="lastwpt" />
+		</fieldset>
+		<fieldset>
+		  <legend>Information pilote</legend>
+		  Utilisateur: <input type="text" name="login"/> <br />
+		  Mot de passe: <input type="password" name="password"/>
+		</fieldset>
+		<input type="submit" value="Je valide ce vol de ouf!" />
+	      </form>
             </div>
 
 	    <div class="photo">
