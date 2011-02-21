@@ -31,6 +31,34 @@ WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
 FICHE_ENCODING="utf-8"
 
+class Declaration:
+    def __init__(self, pilot, date, cross, last_balise):
+        self.pilot = unicode(pilot)
+        self.date = unicode(date)
+        self.cross = cross
+        self.last_balise = int(last_balise)
+        
+        self.distance = 0
+        self.points = 0
+        prev = self.cross.takeoff
+
+        for i,b in enumerate(self.cross.waypoints + [self.cross.landing]):
+            if i > self.last_balise:
+                break
+
+            self.distance += b.distance_to(prev)
+            self.points += b.points
+            prev = b
+        
+        
+
+    def __unicode__(self):
+        s = u"||".join([u'Declaration',self.pilot, self.date, unicode(self.cross.fid), unicode(self.last_balise), unicode(self.distance), unicode(self.points)])
+        return s
+   
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+
 class Waypoint:
     def __init__(self, name, coords, points=0):
         self.coords = coords
@@ -46,7 +74,7 @@ class Waypoint:
         return unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
     
     def __str__(self):
-        return self.__unicode__.encode("utf-8")
+        return self.__unicode__().encode("utf-8")
 
     def __getattr__(self, name):
         if name == 'lon':
@@ -56,7 +84,7 @@ class Waypoint:
         
 class Cross:
     def __init__(self, name, difficulty, description, 
-                 takeoff, landing, waypoints):
+                 takeoff, landing, waypoints, fid):
         self.name = name
         self.difficulty = difficulty
         self.description = description
@@ -65,12 +93,14 @@ class Cross:
         self.landing = landing
         self.distance = -1
         self.points = 0
+        self.fid = int(fid)
 
     def __unicode__(self):
         if self.distance == -1:
             self.compute_distance()
 
         retstr =  u"Name:" + self.name + u"/"
+        retstr =  u"FId:" + self.fid + u"/"
         retstr += u"Difficulte:" + self.difficulty + u"/"
         retstr += u"Distance:" + unicode(self.distance) + u"/"
         retstr += u"Points:" + unicode(self.points) + u"/"
@@ -81,7 +111,7 @@ class Cross:
         return retstr
 
     def __str__(self):
-        return self.__unicode__.encode("utf-8")
+        return self.__unicode__().encode("utf-8")
 
     def compute_distance(self):
         prev_wpt = self.takeoff
@@ -187,11 +217,23 @@ def getLatLonFromUTM(easting, northing, zone):
     
     return (lon,lat)
 
-def loadFromIni(filename, debug=False):
+def loadDeclarationFromIni(filename, cross):
+    config = ConfigParser.ConfigParser()
+    config.read(filename)
+
+    pilot_name = config.get('declaration', 'pilot').decode(FICHE_ENCODING)
+    decl_date = config.get('declaration', 'date').decode(FICHE_ENCODING)
+    decl_cross_id = int(config.get('declaration', 'cross').decode(FICHE_ENCODING))
+    decl_last_wpt = config.get('declaration', 'last_balise').decode(FICHE_ENCODING)
+
+    return Declaration(pilot_name, decl_date, cross[decl_cross_id], decl_last_wpt)
+
+def loadFichesFromIni(filename, debug=False):
     config = ConfigParser.ConfigParser()
     config.read(filename)
 
     titre = config.get('general', 'titre').decode(FICHE_ENCODING)
+    fid = config.get('general', 'id').decode(FICHE_ENCODING)
     descr = config.get('general', 'description').decode(FICHE_ENCODING)
     ##diff = config.get('general', 'difficulté').decode(FICHE_ENCODING)
     diff = u""
@@ -236,5 +278,5 @@ def loadFromIni(filename, debug=False):
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
                                       unpackUTM(b_utm_str), int(b_points)))
 
-    c = Cross(titre, diff, descr, deco, atterro, waypoints)
+    c = Cross(titre, diff, descr, deco, atterro, waypoints, fid=fid)
     return c

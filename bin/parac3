@@ -26,7 +26,7 @@ from Cheetah.Template import Template
 fiches = {}
 
 for i in sys.argv[1:]:
-    cross = parachallenge.loadFromIni(i)
+    cross = parachallenge.loadFichesFromIni(i)
     basename = ".".join(i.split(".")[:-1])
 
     fiches[cross.name] = [cross, 

@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#   parachallenge
+#   Copyright (C) 2010  Marc Poulhiès
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import parachallenge
+import pyproj
+import sys
+import os
+import os.path
+from Cheetah.Template import Template
+
+fiches_fin = open(sys.argv[2], "r")
+
+fiches = {}
+
+for fiche in fiches_fin.xreadlines():
+    fpath = fiche.strip()
+    f = parachallenge.loadFichesFromIni(fpath)
+    fiches[f.fid] = f
+
+print "Found %d fiches" % len(fiches)
+
+decls = []
+for decl_filename in os.listdir(sys.argv[1]):
+    decl_filepath = os.path.join(sys.argv[1], decl_filename)
+    d = parachallenge.loadDeclarationFromIni(decl_filepath, fiches)
+    decls.append(d)
+
+print "Found %d declarations." % len(decls)
