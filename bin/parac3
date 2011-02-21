@@ -25,9 +25,12 @@ from Cheetah.Template import Template
 
 fiches = {}
 
-for i in sys.argv[1:]:
-    cross = parachallenge.loadFichesFromIni(i)
-    basename = ".".join(i.split(".")[:-1])
+fiches_fin = open(sys.argv[1], "r")
+
+for fiche in fiches_fin.xreadlines():
+    fpath = fiche.strip()
+    cross = parachallenge.loadFichesFromIni(fpath)
+    basename = ".".join(fpath.split(".")[:-1])
 
     fiches[cross.name] = [cross, 
                           basename.replace('/', '__'),
@@ -48,6 +51,8 @@ for i in sys.argv[1:]:
     kmlout.close()
     rstout.close()
     htmlout.close()
+
+fiches_fin.close()
 
 t = Template(file='templates/index.cheetah')
 t.allcross = fiches
