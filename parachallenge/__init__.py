@@ -31,6 +31,19 @@ WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
 FICHE_ENCODING="utf-8"
 
+class Pilot:
+    def __init__(self, name):
+        self.name = unicode(name)
+        self.points = 0
+        self.distance = 0
+
+    def __unicode__(self):
+        return self.name + u" " + u"|".join([unicode(self.points), 
+                                             unicode(self.distance)])
+
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+
 class Declaration:
     def __init__(self, pilot, date, cross, last_balise):
         self.pilot = unicode(pilot)

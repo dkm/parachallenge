@@ -33,6 +33,8 @@ for fiche in fiches_fin.xreadlines():
     f = parachallenge.loadFichesFromIni(fpath)
     fiches[f.fid] = f
 
+fiches_fin.close()
+
 print "Found %d fiches" % len(fiches)
 
 decls = []
@@ -42,3 +44,24 @@ for decl_filename in os.listdir(sys.argv[1]):
     decls.append(d)
 
 print "Found %d declarations." % len(decls)
+
+pilots = {}
+
+for d in decls:
+    if d.pilot in pilots:
+        pilot = pilots[d.pilot]
+    else:
+        pilot = parachallenge.Pilot(d.pilot)
+        pilots[d.pilot] = pilot
+
+    pilot.points += d.points
+    pilot.distance += d.distance
+
+sorted_pilots = sorted(pilots.values(), key=lambda pilot: pilot.points)
+
+t = Template(file='templates/results.cheetah')
+sorted_pilots.reverse()
+t.pilots = sorted_pilots
+resout = open("final/results.html", "w")
+print >>resout, t
+resout.close()
