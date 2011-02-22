@@ -6,6 +6,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="style/Simple_folder/style.css" />
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+        <script type="text/javascript"
+        src="style/Simple_folder/js/jquery-1.5.min.js"></script>          
+	<script type="text/javascript">
+	  var fiches;
+	  $.parachallenge = {};
+
+	  $.ajax({
+	   async: false,
+	   dataType: "json",
+           url: "/parachallenge/fiches.json",
+           success: function(data){
+              $.parachallenge["fiches"] = data;
+           }
+	  });
+	</script>
     </head>
     <body>
         <div id="top">
@@ -122,7 +137,6 @@
         </div>
        <div id="whitespace">
         </div>
-
     <div id="column">
             <h1 class="head">Formulaire de déclaration</h1>
 	    <div class="border1">
@@ -134,13 +148,16 @@
 	      <form action="decl.php" method="post">
 		<fieldset>
 		<legend>Cross:</legend>
-		<select name="cross">
+		<select id="cross" name="cross">
 #for $key,$val in $allcross.items()
                    <option value="$val.fid">$val.name</option>
 #end for
 		</select>
 <br />
-		Jusqu'à la balise : <input type="text" name="lastwpt" />
+		Jusqu'à la balise : 
+                <select id="lastwpt" name="lastwpt">
+		  
+		</select>
 		</fieldset>
 		<fieldset>
 		  <legend>Information pilote</legend>
@@ -167,5 +184,18 @@
         2011 &copy; You
       </div>
     </div>
+
+<script>
+    \$("#cross").change( function () { 
+      
+      var options = '';
+      var hep = $.parachallenge["fiches"][1][\$(this).val()];
+      for (var i = 0; i < $.parachallenge["fiches"][\$(this).val()]["waypoints"].length; i++) {
+        options += '<option value="' + i + '">' + i + '</option>';
+      }
+      \$("#lastwpt").html(options);
+    });
+</script>
+
     </body>
 </html>
