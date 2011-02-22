@@ -31,16 +31,30 @@ WGS84_GEOD = pyproj.Geod(ellps='WGS84')
 
 FICHE_ENCODING="utf-8"
 
+import json
+
+class ParachallengeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Cross) or isinstance(obj, Pilot) or isinstance(obj,Waypoint) or isinstance(obj, Declaration):
+            return obj.toMap()
+
+        return json.JSONEncoder.default(self, obj)
+
 class Pilot:
     def __init__(self, name):
         self.name = unicode(name)
         self.points = 0
         self.distance = 0
 
+    def toMap(self):
+        m = { 'name' : self.name,
+              'points' : self.points,
+              'distance' : self.distance}
+        return m
+
     def __unicode__(self):
         return self.name + u" " + u"|".join([unicode(self.points), 
                                              unicode(self.distance)])
-
     def __str__(self):
         return self.__unicode__().encode("utf-8")
 
@@ -63,7 +77,14 @@ class Declaration:
             self.points += b.points
             prev = b
         
-        
+    def toMap(self):
+        m = { 'pilot' : self.pilot,
+              'date' : self.date,
+              'cross' : self.cross,
+              'last_balise' : self.last_balise,
+              'distance' : self.distance,
+              'points': self.points}
+        return m
 
     def __unicode__(self):
         s = u"||".join([u'Declaration',self.pilot, self.date, unicode(self.cross.fid), unicode(self.last_balise), unicode(self.distance), unicode(self.points)])
@@ -77,6 +98,12 @@ class Waypoint:
         self.coords = coords
         self.name = name
         self.points = points
+
+    def toMap(self):
+        m = { 'coords' : self.coords,
+              'name' : self.name,
+              'points' : self.points}
+        return m
 
     def distance_to(self, other):
         fwd,back,dist = WGS84_GEOD.inv(self.coords[0], self.coords[1],
@@ -107,6 +134,18 @@ class Cross:
         self.distance = -1
         self.points = 0
         self.fid = int(fid)
+
+    def toMap(self):
+        m = { 'name': self.name,
+              'difficulty' : self.difficulty,
+              'description' : self.description,
+              'waypoints': self.waypoints,
+              'takeoff' : self.takeoff,
+              'landing' : self.landing,
+              'distance' : self.distance,
+              'points' : self.points,
+              'fid' : self.fid}
+        return m
 
     def __unicode__(self):
         if self.distance == -1:
