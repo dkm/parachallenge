@@ -23,6 +23,7 @@ import sys
 import os
 import os.path
 from Cheetah.Template import Template
+import json
 
 fiches_fin = open(sys.argv[2], "r")
 
@@ -59,9 +60,26 @@ for d in decls:
 
 sorted_pilots = sorted(pilots.values(), key=lambda pilot: pilot.points)
 
+
 t = Template(file='templates/results.cheetah')
 sorted_pilots.reverse()
 t.pilots = sorted_pilots
 resout = open("final/results.html", "w")
 print >>resout, t
 resout.close()
+
+json_pilots = json.dumps(sorted_pilots, indent=3, 
+                         cls=parachallenge.ParachallengeEncoder)
+json_out = open("final/pilots.json", "w")
+print >>json_out, json_pilots
+json_out.close()
+
+
+json_decls = json.dumps(decls, indent=3, 
+                        cls=parachallenge.ParachallengeEncoder)
+json_out = open("final/declarations.json", "w")
+print >>json_out, json_decls
+json_out.close()
+
+
+

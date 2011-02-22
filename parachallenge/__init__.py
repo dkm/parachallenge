@@ -78,9 +78,10 @@ class Declaration:
             prev = b
         
     def toMap(self):
+        # do not embed the full cross object, simply its fid.
         m = { 'pilot' : self.pilot,
               'date' : self.date,
-              'cross' : self.cross,
+              'cross' : self.cross.fid,
               'last_balise' : self.last_balise,
               'distance' : self.distance,
               'points': self.points}
