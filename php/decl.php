@@ -1,5 +1,5 @@
-/* -*- coding: utf-8 -*- */
 <?php
+/* -*- coding: utf-8 -*- */
 header("Content-Type: text/plain");
 
 $login = $_POST['login'];
