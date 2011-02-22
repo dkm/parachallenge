@@ -23,7 +23,7 @@ import sys
 import os
 import os.path
 from Cheetah.Template import Template
-import json
+
 
 fiches_fin = open(sys.argv[1], "r")
 
@@ -35,8 +35,6 @@ for fiche in fiches_fin.xreadlines():
     fiches[f.fid] = f
 
 fiches_fin.close()
-
-json_fiches = json.dumps(fiches, indent=3, cls=parachallenge.ParachallengeEncoder)
 
 print "Found %d fiches" % len(fiches)
 
