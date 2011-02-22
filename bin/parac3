@@ -59,7 +59,8 @@ for fiche in fiches_fin.xreadlines():
 
 fiches_fin.close()
 
-json_fiches = json.dumps((fiches, fiches_by_id), indent=3, cls=parachallenge.ParachallengeEncoder)
+json_fiches = json.dumps((fiches, fiches_by_id), indent=3, 
+                         cls=parachallenge.ParachallengeEncoder)
 
 json_fiches_out = open("final/fiches.json", "w")
 print >>json_fiches_out, json_fiches

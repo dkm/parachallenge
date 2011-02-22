@@ -24,7 +24,6 @@ import os
 import os.path
 from Cheetah.Template import Template
 
-
 fiches_fin = open(sys.argv[1], "r")
 
 fiches = {}
