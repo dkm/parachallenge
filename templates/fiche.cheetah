@@ -6,6 +6,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="../style/Simple_folder/style.css" />
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+        <script type="text/javascript"
+        src="../style/Simple_folder/js/jquery-1.5.min.js"></script>          
+	<script type="text/javascript">
+	  var fiches;
+	  $.parachallenge = {};
+
+	  $.ajax({
+	   async: false,
+	   dataType: "json",
+           url: "/parachallenge/fiches.json",
+           success: function(data){
+              $.parachallenge["fiches"] = data;
+           }
+	  });
+	</script>
+
     </head>
     <body>
         <div id="top">
@@ -150,7 +166,7 @@
 	      </p>
 
 	      <h2>Parcours</h2>
-
+	      <form id="parcoursform">
 	      <ul>
 		<li>Décolage: $cross.takeoff.name</li>
 #set $prev=$cross.takeoff
@@ -164,6 +180,8 @@
 		pts) $dist km </li>
 	      </ul>
 
+	      <input type="submit" value="Je veux déclarer ce vol!" />
+	      </form>
             </div>
 
 	    <div class="photo">
@@ -190,5 +208,31 @@
         2011 &copy; You
       </div>
     </div>
+
+    <script>
+      var newcontent = "";
+      var guard=false;
+
+      \$('#parcoursform').submit(function() {
+        if (guard) { return true; }
+        guard = true;
+        \$('#parcoursform > ul > li').each(function(index) {
+           newcontent += '<input type="radio" name="lastwpt" value="' + index + '"';
+           if (index == 1) newcontent += 'checked="checked"';
+           newcontent +=  ';/>' + \$(this).text() + '<br />';
+        });
+        newcontent += '<fieldset><legend>Information pilote</legend>';
+
+        newcontent += 'Utilisateur: <input type="text" name="login"/> <br />' ;
+        newcontent += 'Mot de passe: <input type="password" name="password"/> <br />' ;
+        newcontent += '<input type="submit" value="je déclare!" />';
+	newcontent += '</fieldset>';
+        newcontent += '<input type="hidden" name="cross" value="$cross.fid" />';
+        \$('#parcoursform').html(newcontent);
+        \$('#parcoursform').attr({'action': '../decl.php',
+                                  'method': 'post'});
+        return false;
+      });
+    </script>
     </body>
 </html>
