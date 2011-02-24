@@ -149,6 +149,7 @@
 		<fieldset>
 		<legend>Cross:</legend>
 		<select id="cross" name="cross">
+		  <option value=""></option>
 #for $key,$val in $allcross.items()
                    <option value="$val.fid">$val.name</option>
 #end for
@@ -189,10 +190,16 @@
     \$("#cross").change( function () { 
       
       var options = '';
-      var hep = $.parachallenge["fiches"][1][\$(this).val()];
-      for (var i = 0; i < $.parachallenge["fiches"][\$(this).val()]["waypoints"].length; i++) {
-        options += '<option value="' + i + '">' + i + '</option>';
+      if (\$(this).val() == "") {
+            \$("#lastwpt").html("")
+            return;
       }
+
+      var cross_fiche = $.parachallenge["fiches"][1][\$(this).val()][0];
+      for (var i = 0; i < cross_fiche["waypoints"].length; i++) {
+        options += '<option value="' + i + '">' + cross_fiche["waypoints"][i]["name"]  + '</option>';
+      }
+      options += '<option value="' + cross_fiche["waypoints"].length + '">' + cross_fiche["landing"]["name"]  + '</option>';
       \$("#lastwpt").html(options);
     });
 </script>
