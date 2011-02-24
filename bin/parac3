@@ -51,7 +51,8 @@ for fiche in fiches_fin.xreadlines():
     print >>rstout, cross.toRST()
     print >>htmlout, cross.toHTML(
         '/parachallenge/build-kml/%s.kml' % basename.replace('/', '__'),
-        '/parachallenge/build-pdf/%s.pdf' % basename.replace('/', '__'))
+        '/parachallenge/build-pdf/%s.pdf' % basename.replace('/', '__'),
+        'http://bordel.kataplop.net/')
 
     kmlout.close()
     rstout.close()

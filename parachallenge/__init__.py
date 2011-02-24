@@ -247,11 +247,12 @@ class Cross:
         return r.encode('utf-8')
 
 
-    def toHTML(self, kmlfile, pdffile):
+    def toHTML(self, kmlfile, pdffile, sitebase):
         t = Template(file='templates/fiche.cheetah')
         t.cross = self
         t.kmlfile = kmlfile
         t.pdffile = pdffile
+        t.sitebase = sitebase
         return t
 
 
