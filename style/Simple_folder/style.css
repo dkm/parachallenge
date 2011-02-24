@@ -72,7 +72,7 @@ th {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 975px;
+    width: 1200px;
     height: 307px;
     background-image: url('images/top.jpg')
 }
@@ -90,7 +90,7 @@ th {
     position: absolute;
     top: 307px;
     left: 82px;
-    width: 824px;
+    width: 1118px;
     height: 410px;
     background-color: #ffffff
 }
@@ -266,7 +266,7 @@ ul.list {
     top: 210px;
     left: 80px;
     height: 490px;
-    width: 360px
+    width: 985px
 }
 
 #column2 {
@@ -293,7 +293,7 @@ ul.list {
     top: 210px;
     left: 80px;
     height: 490px;
-    width: 760px
+    width: 985px;
 }
 
 .contener1 {
@@ -301,7 +301,7 @@ ul.list {
     top: 80px;
     left: 30px;
     height: 400px;
-    width: 455px;
+    width: 510px;
     text-align: justify;
     overflow: auto
 }
