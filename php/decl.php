@@ -1,6 +1,6 @@
 <?php
 /* -*- coding: utf-8 -*- */
-header("Content-Type: text/plain");
+header("Content-Type:  application/json");
 
 $login = $_POST['login'];
 $cross = $_POST['cross'];
@@ -20,8 +20,6 @@ $fname = tempnam("declarations", $pref);
 $handle = fopen($fname, "w");
 fwrite($handle, $str);
 fclose($handle);
-
-echo "Pour l'instant, tu as que ça comme retour. Mais ton vol devrait être pris en compte.\n";
-echo "Pour info, garde ça comme «preuve», ça peut aider en cas de bug:\n$fname\n";
+echo json_encode(array("result"=>true,"file"=>"$pref"));
 /*header('Location: index.html');*/
 ?>

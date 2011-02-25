@@ -210,17 +210,34 @@
     </div>
 
     <script>
-      var newcontent = "";
+
       var guard=false;
 
       \$('#parcoursform').submit(function() {
-        if (guard) { return true; }
+        if (guard) { 
+           $.post('../decl.php', \$("#parcoursform").serialize(), 
+               function(data){
+                    \$('#parcoursform > fieldset').html('<div>Vol validé:' +
+                                    data["file"] + '</div>');
+                    var newul = "<ul>";
+                    \$('#input > input').each(function(index) {
+                       newul += '<li>' + \$(this).text() + '</li>';
+                    });
+                    newul += '</ul>';
+                    \$('#input').html(newul);
+               });
+          return false;
+       }
+
         guard = true;
+
+        var newcontent = '<div id="input">';
         \$('#parcoursform > ul > li').each(function(index) {
            newcontent += '<input type="radio" name="lastwpt" value="' + index + '"';
            if (index == 1) newcontent += 'checked="checked"';
            newcontent +=  ';/>' + \$(this).text() + '<br />';
         });
+        newcontent += '</div>';
         newcontent += '<fieldset><legend>Information pilote</legend>';
 
         newcontent += 'Utilisateur: <input type="text" name="login"/> <br />' ;

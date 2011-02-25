@@ -145,7 +145,7 @@
             </div>
 	    <div class="contener1">
               <br/>
-	      <form action="decl.php" method="post">
+	      <form id="declform">
 		<fieldset>
 		<legend>Cross:</legend>
 		<select id="cross" name="cross">
@@ -187,6 +187,14 @@
     </div>
 
 <script>
+    \$('#declform').submit(function(){
+        $.post('decl.php', \$("#declform").serialize(), 
+               function(data){
+                    \$('#declform').html('<div>Vol validé:' + data["file"] + '</div>');
+               });
+       return false;
+    });
+
     \$("#cross").change( function () { 
       
       var options = '';
