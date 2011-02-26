@@ -131,6 +131,7 @@
             </div>
 	    <div class="contener1">
               <br/>
+	      Date du classement: $date.
               <ul>
 #for $pilot in $pilots
                  <li>

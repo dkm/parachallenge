@@ -23,6 +23,7 @@ import os
 import os.path
 from Cheetah.Template import Template
 import json
+import datetime
 
 fiches_fin = open(sys.argv[2], "r")
 
@@ -63,6 +64,7 @@ sorted_pilots = sorted(pilots.values(), key=lambda pilot: pilot.points)
 t = Template(file='templates/results.cheetah')
 sorted_pilots.reverse()
 t.pilots = sorted_pilots
+t.date = datetime.datetime.today().strftime("%d/%m/%Y %H:%M")
 resout = open("final/results.html", "w")
 print >>resout, t
 resout.close()
