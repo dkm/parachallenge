@@ -89,7 +89,7 @@
                 </a>
             </div>
             <div id="cart3">
-                <a href="#" class="carts">
+                <a href="declaration.html" class="carts">
                     <object>
                         <ul class="menu">
                             <li>
@@ -149,18 +149,23 @@
               <br/>
 	      <form id="declform">
 		<fieldset>
-		<legend>Cross:</legend>
+		<legend>Information sur le vol:</legend>
+		<label for="cross">Cross</label>:
 		<select id="cross" name="cross">
 		  <option value=""></option>
 #for $key,$val in $allcross.items()
                    <option value="$val.fid">$val.name</option>
 #end for
 		</select>
-<br />
+		<br />
+
 		<label for="lastwpt">Jusqu'à la balise </label>: 
-                <select id="lastwpt" name="lastwpt">
-		  
-		</select>
+                <select id="lastwpt" name="lastwpt"></select>
+
+		<br/>
+		<label for="date">Date</label>:
+		<input type="text" name="date" id="datepicker" />
+
 		</fieldset>
 		<fieldset>
 		  <legend>Information pilote</legend>
@@ -189,10 +194,31 @@
     </div>
 
 <script>
+    \$('#datepicker').datepicker({dateFormat: 'dd-mm-yy', firstDay:1 });
+
     \$('#declform').submit(function(){
+        var invalid_fields = new Array();
+    
+        \$(":input").each(function(index, elt){
+            var v = \$(this).val();
+            if (! v) {
+                invalid_fields.push(\$(this).attr('name'));
+            }
+        });
+
+        if (invalid_fields.length > 0) {
+           alert("Champs invalide(s): " + invalid_fields.join(", "));
+           return false;
+        }
+
         $.post('decl.php', \$("#declform").serialize(), 
                function(data){
-                    \$('#declform').html('<div>Vol validé:' + data["file"] + '</div>');
+                    if (!data["result"]) {
+                      alert("Vol NON VALIDÉ :\n" + data["reason"]);
+                      return false;
+                    }
+
+                    \$('#declform').html('<div><p>Vol VALIDÉ. C\'est tout bon.<br/> Au cas ou, merci de garder ça dans un coin:' + data["file"] + '</p></div>');
                });
        return false;
     });
