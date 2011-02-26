@@ -64,7 +64,8 @@ sorted_pilots = sorted(pilots.values(), key=lambda pilot: pilot.points)
 t = Template(file='templates/results.cheetah')
 sorted_pilots.reverse()
 t.pilots = sorted_pilots
-t.date = datetime.datetime.today().strftime("%d/%m/%Y %H:%M")
+# GMT + 1.
+t.date = (datetime.datetime.today() - datetime.timedelta(0,3600,0)).strftime("%d/%m/%Y %H:%M")
 resout = open("final/results.html", "w")
 print >>resout, t
 resout.close()
