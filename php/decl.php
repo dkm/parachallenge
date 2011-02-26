@@ -41,6 +41,8 @@ $fname = tempnam("declarations", $pref);
 $handle = fopen($fname, "w");
 fwrite($handle, $str);
 fclose($handle);
+
+chmod($fname, 0644);
 echo json_encode(array("result"=>true,"file"=>"$fname"));
 /*header('Location: index.html');*/
 ?>
