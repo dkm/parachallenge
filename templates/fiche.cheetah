@@ -221,7 +221,8 @@
                                     data["file"] + '</div>');
                     var newul = "<ul>";
                     \$('#input > input').each(function(index) {
-                       newul += '<li>' + \$(this).text() + '</li>';
+	               var o = \$(this).next('span');
+                       newul += '<li>' + o.text() +'</li>';
                     });
                     newul += '</ul>';
                     \$('#input').html(newul);
@@ -235,15 +236,15 @@
         \$('#parcoursform > ul > li').each(function(index) {
            newcontent += '<input type="radio" name="lastwpt" value="' + index + '"';
            if (index == 1) newcontent += 'checked="checked"';
-           newcontent +=  ';/>' + \$(this).text() + '<br />';
+           newcontent +=  '/> <span>' + \$(this).text() + '</span><br />';
         });
         newcontent += '</div>';
         newcontent += '<fieldset><legend>Information pilote</legend>';
 
-        newcontent += 'Utilisateur: <input type="text" name="login"/> <br />' ;
-        newcontent += 'Mot de passe: <input type="password" name="password"/> <br />' ;
+        newcontent += '<label for="login">Nom</label>:<input type="text" name="login"/> <br />' ;
+        newcontent += '<label for="password">Mot de passe</label>: <input type="password" name="password"/> <br />' ;
         newcontent += '<input type="submit" value="je déclare!" />';
-	newcontent += '</fieldset>';
+        newcontent += '</fieldset>';
         newcontent += '<input type="hidden" name="cross" value="$cross.fid" />';
         \$('#parcoursform').html(newcontent);
         \$('#parcoursform').attr({'action': '../decl.php',
