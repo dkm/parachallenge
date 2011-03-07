@@ -64,7 +64,7 @@ class Declaration:
         self.date = unicode(date)
         self.cross = cross
         self.last_balise = int(last_balise)
-        self.bonus_wpts = bonus
+        self.bonus_wpts = bonus_wpts
         self.distance = 0
         self.points = 0
         prev = self.cross.takeoff
@@ -72,7 +72,6 @@ class Declaration:
         for i,b in enumerate(self.cross.waypoints + [self.cross.landing]):
             if i > self.last_balise:
                 break
-
             if not b.isbonus or (b.isbonus and i in bonus_wpts):
                 self.distance += b.distance_to(prev)
                 self.points += b.points
@@ -291,7 +290,12 @@ def loadDeclarationFromIni(filename, cross):
     decl_date = config.get('declaration', 'date').decode(FICHE_ENCODING)
     decl_cross_id = int(config.get('declaration', 'cross').decode(FICHE_ENCODING))
     decl_last_wpt = config.get('declaration', 'last_balise').decode(FICHE_ENCODING)
-    bonus_wpts = config.get('declaration', 'bonus').decode(FICHE_ENCODING).split(',')
+    b_w = config.get('declaration', 'bonus').decode(FICHE_ENCODING).split(',')
+    if b_w and b_w[0] != u'':
+        bonus_wpts = [int(x) for x in b_w]
+    else:
+        bonus_wpts = []
+
     return Declaration(pilot_name, decl_date, cross[decl_cross_id], decl_last_wpt, bonus_wpts)
 
 def loadFichesFromIni(filename, debug=False):
