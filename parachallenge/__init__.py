@@ -115,7 +115,8 @@ class Waypoint:
 
     def __unicode__(self):
         s =  unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
-        if self.isBonus:
+
+        if self.isbonus:
             return s + u"*"
         else:
             return s
@@ -327,7 +328,10 @@ def loadFichesFromIni(filename, debug=False):
     atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str), int(atterro_points))
 
     waypoints = []
-    for name,val in config.items('trajet'):
+
+    wpts = config.items('trajet')
+    wpts.sort()
+    for name,val in wpts:
         name = name.decode(FICHE_ENCODING)
         val = val.decode(FICHE_ENCODING)
         m = re.match("b(?P<idx>\d+)", name)
@@ -347,7 +351,8 @@ def loadFichesFromIni(filename, debug=False):
             else:
                 # not a bonus and no points ?
                 b_utm_str, b_name, b_points = vals + [0]
-
+                
+            print [x.name for x in waypoints]
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
                                       unpackUTM(b_utm_str), int(b_points),
                                       b_bonus))

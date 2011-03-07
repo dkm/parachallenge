@@ -8,6 +8,8 @@ $cross = $_POST['cross'];
 $lastb = $_POST['lastwpt'];
 $date = $_POST['date'];
 
+$bonus = $_POST['bonus'];
+
 $valid = true;
 
 /*
@@ -32,6 +34,11 @@ $str = "[declaration] \n" .
        "date : " . $date . "\n" .
        "cross : " . $cross . "\n" .
        "last_balise : " . $lastb . "\n";
+
+if (! empty($bonus)){
+    $N = count($bonus);
+    $str .= "bonus :" . implode(',', $bonus) . "\n";
+}
 
 //echo $str;
 

@@ -196,7 +196,9 @@ def create_linestring(points):
 
     coords = doc.createElement("coordinates")
     ls.appendChild(coords)
-    text = " ".join(['%s,%s,0' %(x.lon, x.lat) for x in points])
+
+    # filter out bonus waypoints
+    text = " ".join(['%s,%s,0' %(x.lon, x.lat) for x in filter(lambda x:not x.isbonus, points)])
     coords_text = doc.createTextNode(text)
     coords.appendChild(coords_text)
 
