@@ -339,7 +339,6 @@ def loadFichesFromIni(filename, debug=False):
         m = re.match("b(?P<idx>\d+)", name)
 
         if m:
-            print "name: ", name
             vals = [x.strip() for x in val.split('|')]
             b_bonus = False
 
@@ -354,7 +353,6 @@ def loadFichesFromIni(filename, debug=False):
                 # not a bonus and no points ?
                 b_utm_str, b_name, b_points = vals + [0]
                 
-            print [x.name for x in waypoints]
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
                                       unpackUTM(b_utm_str), int(b_points),
                                       b_bonus))
