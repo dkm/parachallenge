@@ -59,12 +59,12 @@ class Pilot:
         return self.__unicode__().encode("utf-8")
 
 class Declaration:
-    def __init__(self, pilot, date, cross, last_balise):
+    def __init__(self, pilot, date, cross, last_balise, bonus_wpts):
         self.pilot = unicode(pilot)
         self.date = unicode(date)
         self.cross = cross
         self.last_balise = int(last_balise)
-        
+        self.bonus_wpts = bonus
         self.distance = 0
         self.points = 0
         prev = self.cross.takeoff
@@ -73,9 +73,10 @@ class Declaration:
             if i > self.last_balise:
                 break
 
-            self.distance += b.distance_to(prev)
-            self.points += b.points
-            prev = b
+            if not b.isbonus or (b.isbonus and i in bonus_wpts):
+                self.distance += b.distance_to(prev)
+                self.points += b.points
+                prev = b
         
     def toMap(self):
         # do not embed the full cross object, simply its fid.
@@ -83,6 +84,7 @@ class Declaration:
               'date' : self.date,
               'cross' : self.cross.fid,
               'last_balise' : self.last_balise,
+              'bonus' : self.bonus_wpts,
               'distance' : self.distance,
               'points': self.points}
         return m
@@ -289,8 +291,8 @@ def loadDeclarationFromIni(filename, cross):
     decl_date = config.get('declaration', 'date').decode(FICHE_ENCODING)
     decl_cross_id = int(config.get('declaration', 'cross').decode(FICHE_ENCODING))
     decl_last_wpt = config.get('declaration', 'last_balise').decode(FICHE_ENCODING)
-
-    return Declaration(pilot_name, decl_date, cross[decl_cross_id], decl_last_wpt)
+    bonus_wpts = config.get('declaration', 'bonus').decode(FICHE_ENCODING).split(',')
+    return Declaration(pilot_name, decl_date, cross[decl_cross_id], decl_last_wpt, bonus_wpts)
 
 def loadFichesFromIni(filename, debug=False):
     config = ConfigParser.ConfigParser()

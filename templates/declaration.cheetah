@@ -162,9 +162,11 @@
 		<label for="lastwpt">Jusqu'à la balise </label>: 
                 <select id="lastwpt" name="lastwpt"></select>
 		<br/>
+
 		<label>Balises bonus</label>:
-		<div id="bonuswpts"/>
+		<div id="bonuswpts"> </div>
 		<br/>
+
 		<label for="date">Date</label>:
 		<input type="text" name="date" id="datepicker" />
 

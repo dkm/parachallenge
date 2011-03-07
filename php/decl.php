@@ -35,10 +35,13 @@ $str = "[declaration] \n" .
        "cross : " . $cross . "\n" .
        "last_balise : " . $lastb . "\n";
 
+$str .= "bonus : ";
+
 if (! empty($bonus)){
-    $N = count($bonus);
-    $str .= "bonus :" . implode(',', $bonus) . "\n";
-}
+   $str .= implode(',', $bonus);
+} 
+
+$str .= "\n";
 
 //echo $str;
 
