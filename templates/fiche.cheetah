@@ -175,7 +175,8 @@
 #set $prev=$cross.takeoff
 #for $w in $cross.waypoints
 #set dist="%.2f" % $w.distance_to($prev)
-		<li>$w.name (+$w.points pts) $dist km</li>
+#set bonus=(lambda x: "(bonus)" if x else "")($w.isbonus)
+		<li>$w.name (+$w.points pts) $dist km $bonus</li>
 #set prev=$w
 #end for
 #set dist="%.2f" % $prev.distance_to($cross.landing)

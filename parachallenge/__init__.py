@@ -95,15 +95,17 @@ class Declaration:
         return self.__unicode__().encode("utf-8")
 
 class Waypoint:
-    def __init__(self, name, coords, points=0):
+    def __init__(self, name, coords, points=0, isbonus=False):
         self.coords = coords
         self.name = name
         self.points = points
+        self.isbonus = isbonus
 
     def toMap(self):
         m = { 'coords' : self.coords,
               'name' : self.name,
-              'points' : self.points}
+              'points' : self.points,
+              'bonus' : self.isbonus}
         return m
 
     def distance_to(self, other):
@@ -112,7 +114,11 @@ class Waypoint:
         return dist/1000.0
 
     def __unicode__(self):
-        return unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
+        s =  unicode(self.coords[0]) + u", " + unicode(self.coords[1])+ u" | " + self.name
+        if self.isBonus:
+            return s + u"*"
+        else:
+            return s
     
     def __str__(self):
         return self.__unicode__().encode("utf-8")
@@ -173,6 +179,9 @@ class Cross:
         prev_p = self.takeoff
 
         for p in self.waypoints:
+            # skip bonus waypoints in calculation
+            if p.isBonus:
+                continue
             d += prev_wpt.distance_to(p)
             points += p.points
             prev_p = p
@@ -303,18 +312,18 @@ def loadFichesFromIni(filename, debug=False):
     atterro_str = config.get('trajet', 'atterro').decode(FICHE_ENCODING)
     
     vals = [x.strip() for x in deco_str.split('|')]
-    if len(vals) == 3:
-        deco_utm_str, deco_name, deco_points = vals
-    else:
-        deco_utm_str, deco_name, deco_points = vals + [0]
+    if len(vals) != 2:
+        print "ERROR in takeoff spec"
+
+    deco_utm_str, deco_name = vals
 
     vals = [x.strip() for x in atterro_str.split('|')]
-    if len(vals) == 3:
-        atterro_utm_str, atterro_name, atterro_points = vals
-    else:
-        atterro_utm_str, atterro_name, atterro_points = vals + [0]
+    if len(vals) != 3:
+        print "ERROR in landing spec"
 
-    deco = Waypoint(deco_name, unpackUTM(deco_utm_str), int(deco_points))
+    atterro_utm_str, atterro_name, atterro_points = vals
+
+    deco = Waypoint(deco_name, unpackUTM(deco_utm_str))
     atterro = Waypoint(atterro_name, unpackUTM(atterro_utm_str), int(atterro_points))
 
     waypoints = []
@@ -322,15 +331,26 @@ def loadFichesFromIni(filename, debug=False):
         name = name.decode(FICHE_ENCODING)
         val = val.decode(FICHE_ENCODING)
         m = re.match("b(?P<idx>\d+)", name)
+
         if m:
+            print "name: ", name
             vals = [x.strip() for x in val.split('|')]
-            if len(vals) == 3:
+            b_bonus = False
+
+            if len(vals) == 4:
+                # this is a bonus ?
+                b_bonus = True
+                b_utm_str, b_name, b_points = vals[:3]
+            elif len(vals) == 3:
+                # this is not a bonus but has points
                 b_utm_str, b_name, b_points = vals
             else:
+                # not a bonus and no points ?
                 b_utm_str, b_name, b_points = vals + [0]
 
             waypoints.append(Waypoint("B%s %s" %(m.group('idx'), b_name), 
-                                      unpackUTM(b_utm_str), int(b_points)))
+                                      unpackUTM(b_utm_str), int(b_points),
+                                      b_bonus))
 
     c = Cross(titre, diff, descr, deco, atterro, waypoints, fid=fid)
     return c
