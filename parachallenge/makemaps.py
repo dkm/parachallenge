@@ -117,7 +117,7 @@ def create_linestyle(style_id):
 
     color = doc.createElement("color")
     style.appendChild(color)
-    col_text = doc.createTextNode("ffffffff")
+    col_text = doc.createTextNode("ff000000")
     color.appendChild(col_text)
     width = doc.createElement("width")
     style.appendChild(width)
