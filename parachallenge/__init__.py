@@ -25,6 +25,11 @@ import pyproj
 import re
 import ConfigParser
 
+LTF1_ENA = 1
+LTF12_ENB = 2
+LTF2_ENC = 3
+LTF23_END = 4
+
 UTM_RE = re.compile("(?P<lat>\d+(\.\d*)?)\s*N\s*(?P<lon>\d+(\.\d*)?)\s*E\s*(?P<zone>\d+)\s*T\s*")
 
 WGS84_GEOD = pyproj.Geod(ellps='WGS84')
@@ -59,7 +64,7 @@ class Pilot:
         return self.__unicode__().encode("utf-8")
 
 class Declaration:
-    def __init__(self, pilot, date, cross, last_balise, bonus_wpts):
+    def __init__(self, pilot, date, cross, last_balise, bonus_wpts, group=1, cat=LTF12_ENB):
         self.pilot = unicode(pilot)
         self.date = unicode(date)
         self.cross = cross
@@ -67,6 +72,10 @@ class Declaration:
         self.bonus_wpts = bonus_wpts
         self.distance = 0
         self.points = 0
+
+        self.group = group
+        self.cat = cat
+
         prev = self.cross.takeoff
 
         for i,b in enumerate(self.cross.waypoints + [self.cross.landing]):
@@ -85,7 +94,9 @@ class Declaration:
               'last_balise' : self.last_balise,
               'bonus' : self.bonus_wpts,
               'distance' : self.distance,
-              'points': self.points}
+              'points': self.points,
+              'cat' : self.cat,
+              'group' : self.group}
         return m
 
     def __unicode__(self):

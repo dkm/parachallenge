@@ -8,9 +8,14 @@ $cross = $_POST['cross'];
 $lastb = $_POST['lastwpt'];
 $date = $_POST['date'];
 
+$group = $_POST['group'];
+$cat = $_POST['cat'];
+
 $bonus = $_POST['bonus'];
 
 $valid = true;
+ 
+$reason = "Invalid - BUG";
 
 /*
  * check login/pass
@@ -24,8 +29,24 @@ $valid = true;
  * check valid data
  */
 
+if (empty($login) || empty($password)) {
+   $valid = false;
+   $reason = "Manque login/password";
+} else if (empty($cross) && $cross != 0){
+   $valid = false;
+   $reason = "Manque cross";
+} else if (empty($group)) {
+ $group = 1;
+} else if (empty($cat)){
+ $valid = false;
+ $reason = "Manque cat du parapente";
+} else if (empty($lastb) && $lastb != 0 ){
+   $valid = false;
+   $reason = "Manque balise de fin";
+}
+
 if (! $valid){
-  echo json_encode(array("result"=>false, "reason"=>"bad data"));
+  echo json_encode(array("result"=>false, "reason"=>$reason));
   return;
 }
 
@@ -33,7 +54,10 @@ $str = "[declaration] \n" .
        "pilot : " . $login . "\n" .
        "date : " . $date . "\n" .
        "cross : " . $cross . "\n" .
-       "last_balise : " . $lastb . "\n";
+       "last_balise : " . $lastb . "\n" .
+       "cat : " . $cat . "\n" .
+       "group : " . $group . "\n";
+ 
 
 $str .= "bonus : ";
 

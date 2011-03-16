@@ -257,10 +257,11 @@
         var newcontent = '<div id="input">';
 	var radio_last = '<label>Derniere balise</label>: <br/>';
         var chkb_bonus = '';
+        var first = true;
         for (var i = 0; i < cross_fiche["waypoints"].length; i++) {
           if (!cross_fiche["waypoints"][i]['bonus']){
            radio_last += '<input type="radio" name="lastwpt" value="' + i + '"';
-           if (i == 1) radio_last += 'checked="checked"';
+           if (first) { radio_last += 'checked="checked"'; first = false; }
             radio_last +=  '/> <span>' + cross_fiche["waypoints"][i]["name"] + '</span><br />'
 
           } else {
@@ -269,6 +270,10 @@
                      cross_fiche["waypoints"][i]["name"] + ' <br />';
           }
         }
+
+	radio_last += '<input type="radio" name="lastwpt" value="' + i + '"';
+        if (first) { radio_last += 'checked="checked"'; first = false; }
+	radio_last +=  '/> <span>' + cross_fiche["landing"]["name"] + '</span><br />'
 			    
         newcontent += radio_last + '<br/>';
 	if (chkb_bonus) {
@@ -283,9 +288,29 @@
         newcontent += '<label for="password">Mot de passe</label>:';
 	newcontent += '<input type="password" name="password"/> <br />';
 	newcontent += '<label>Date:</label><input type="text" name="date" id="datepicker"/><br/>';
-        newcontent += '<input type="submit" value="je déclare!" />';
+
+
+	newcontent += '<legend>Certification de l\'aile</legend>';
+		 newcontent += ' <select name="cat">';
+		 newcontent += '   <option value="1">LTF1 / EN A</option>';
+		 newcontent += '   <option value="2">LTF12 / EN B</option>';
+		 newcontent += '   <option value="3">LTF2 / EN C</option>';
+		newcontent += '    <option value="4">LTF23 / EN D</option>';
+		newcontent += '  </select>';
+		newcontent += '  <legend>Nombre de pilote dans le groupe</legend>';
+		newcontent += '  <select name="group">';
+		newcontent += '    <option value="1">1</option>';
+		newcontent += '    <option value="2">2</option>';
+		newcontent += '    <option value="3">3</option>';
+		 newcontent += '   <option value="4">4</option>';
+		 newcontent += '   <option value="5">5</option>';
+		 newcontent += '   <option value="6">6</option>';
+	newcontent += '	  </select>';
+
         newcontent += '</fieldset>';
         newcontent += '<input type="hidden" name="cross" value="$cross.fid" />';
+
+        newcontent += '<input type="submit" value="je déclare!" />';
 
         $.parachallenge["oldform"] = \$('#parcoursform').html();
 

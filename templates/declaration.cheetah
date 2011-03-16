@@ -174,7 +174,25 @@
 		<fieldset>
 		  <legend>Information pilote</legend>
 		  <label for="login">Utilisateur</label>: <input type="text" name="login"/> <br />
-		  <label for="password">Mot de passe</label>: <input type="password" name="password"/>
+		  <label for="password">Mot de passe</label>:
+		  <input type="password" name="password"/><br />
+		  <legend>Certification de l'aile</legend>
+		  <select name="cat">
+		    <option value="1">LTF1 / EN A</option>
+		    <option value="2">LTF12 / EN B</option>
+		    <option value="3">LTF2 / EN C</option>
+		    <option value="4">LTF23 / EN D</option>
+		  </select>
+		  <legend>Nombre de pilote dans le groupe</legend>
+		  <select name="group">
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		    <option value="3">3</option>
+		    <option value="4">4</option>
+		    <option value="5">5</option>
+		    <option value="6">6</option>
+		  </select>
+
 		</fieldset>
 		<input type="submit" value="Je valide ce vol de ouf!" />
 	      </form>
