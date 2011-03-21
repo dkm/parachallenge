@@ -301,6 +301,10 @@ def loadDeclarationFromIni(filename, cross):
     decl_date = config.get('declaration', 'date').decode(FICHE_ENCODING)
     decl_cross_id = int(config.get('declaration', 'cross').decode(FICHE_ENCODING))
     decl_last_wpt = config.get('declaration', 'last_balise').decode(FICHE_ENCODING)
+
+    decl_cat = config.get('declaration', 'group', '1').decode(FICHE_ENCODING)
+    decl_group = config.get('declaration', 'cat', LTF12_ENB).decode(FICHE_ENCODING)
+
     b_w = config.get('declaration', 'bonus').decode(FICHE_ENCODING).split(',')
     if b_w and b_w[0] != u'':
         bonus_wpts = [int(x) for x in b_w]

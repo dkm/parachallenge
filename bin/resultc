@@ -18,6 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import parachallenge
+
 import sys
 import os
 import os.path
@@ -25,9 +26,22 @@ from Cheetah.Template import Template
 import json
 import datetime
 
+# copy from parachallenge
+LTF1_ENA = 1
+LTF12_ENB = 2
+LTF2_ENC = 3
+LTF23_END = 4
+
 fiches_fin = open(sys.argv[2], "r")
 
 fiches = {}
+
+wing_cert = {LTF1_ENA : 0.20,
+             LTF12_ENB : 0.00,
+             LTF2_ENC : -0.10,
+             LTF23_END : -0.30}
+
+group_bonus = 0.05
 
 for fiche in fiches_fin.xreadlines():
     fpath = fiche.strip()
@@ -55,11 +69,10 @@ for d in decls:
         pilot = parachallenge.Pilot(d.pilot)
         pilots[d.pilot] = pilot
 
-    pilot.points += d.points
+    pilot.points += d.points * (1 + wing_cert[d.cat] + d.group*group_bonus)
     pilot.distance += d.distance
 
 sorted_pilots = sorted(pilots.values(), key=lambda pilot: pilot.points)
-
 
 t = Template(file='templates/results.cheetah')
 sorted_pilots.reverse()
