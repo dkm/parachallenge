@@ -68,7 +68,7 @@ class Declaration:
         self.pilot = unicode(pilot)
         self.date = unicode(date)
         self.cross = cross
-        self.last_balise = int(last_balise)
+        self.last_balise = last_balise
         self.bonus_wpts = bonus_wpts
         self.distance = 0
         self.points = 0
@@ -299,11 +299,18 @@ def loadDeclarationFromIni(filename, cross):
 
     pilot_name = config.get('declaration', 'pilot').decode(FICHE_ENCODING)
     decl_date = config.get('declaration', 'date').decode(FICHE_ENCODING)
-    decl_cross_id = int(config.get('declaration', 'cross').decode(FICHE_ENCODING))
-    decl_last_wpt = config.get('declaration', 'last_balise').decode(FICHE_ENCODING)
+    decl_cross_id = config.getint('declaration', 'cross')
+    decl_last_wpt = config.getint('declaration', 'last_balise')
 
-    decl_cat = config.get('declaration', 'group', '1').decode(FICHE_ENCODING)
-    decl_group = config.get('declaration', 'cat', LTF12_ENB).decode(FICHE_ENCODING)
+    if config.has_option('declaration', 'group'):
+        decl_cat = config.getint('declaration', 'group')
+    else:
+        decl_cat = 1
+
+    if config.has_option('declaration', 'cat'):
+        decl_group = config.getint('declaration', 'cat')
+    else:
+        decl_group = LTF12_ENB
 
     b_w = config.get('declaration', 'bonus').decode(FICHE_ENCODING).split(',')
     if b_w and b_w[0] != u'':
