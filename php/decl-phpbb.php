@@ -54,6 +54,13 @@ include($phpbb_root_path . 'common.' . $phpEx);
 // because php include resets these vars.
 $login = $_POST['login'];
 $password = $_POST['password'];
+$cross = $_POST['cross'];
+$lastb = $_POST['lastwpt'];
+$date = $_POST['date'];
+$group = $_POST['group'];
+$cat = $_POST['cat'];
+$bonus = $_POST['bonus'];
+
 
 $r = $auth->login($login, $password);
 
