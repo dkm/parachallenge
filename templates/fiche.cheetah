@@ -165,7 +165,7 @@
 
 	      <p>
 		Télécharger la fiche au format
-		:<a href="$kmlfile">[kml]</a> <a href="$pdffile">[pdf]</a>
+		:<a href="$kmlfile">[kml]</a> <!--<a href="$pdffile">[pdf]</a>-->
 	      </p>
 
 	      <h2>Parcours</h2>
