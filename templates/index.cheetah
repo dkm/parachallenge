@@ -135,8 +135,9 @@
 #for $key,$val in $allcross.items()
                  <li>
 		   <a href="$val[4]">
+#set d="%d" % $val[0].distance
 		     $key ($val[0].takeoff.name -&gt; $val[0].landing.name)
-		   </a>
+		   </a> [$d km / $val[0].points points]
 		 </li>
 #end for
 	      </ul>
