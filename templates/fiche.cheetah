@@ -308,6 +308,12 @@
 	newcontent += '	  </select>';
 
         newcontent += '</fieldset>';
+	newcontent += '<fieldset>';
+
+        newcontent += '<legend>Commentaires/Récit</legend>';
+        newcontent += '<textarea rows="10" cols="55" name="comments"></textarea>';
+        newcontent += '</fieldset>';
+
         newcontent += '<input type="hidden" name="cross" value="$cross.fid" />';
 
         newcontent += '<input type="submit" value="je déclare!" />';

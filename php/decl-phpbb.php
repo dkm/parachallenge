@@ -60,7 +60,7 @@ $date = $_POST['date'];
 $group = $_POST['group'];
 $cat = $_POST['cat'];
 $bonus = $_POST['bonus'];
-
+$comments = $_POST['comments'];
 
 $r = $auth->login($login, $password);
 
@@ -87,6 +87,10 @@ $str = "[declaration] \n" .
        "cat : " . $cat . "\n" .
        "group : " . $group . "\n";
  
+
+if ( $comments) {
+  $str .= "comments : " . $comments . "\n";
+}
 
 $str .= "bonus : ";
 

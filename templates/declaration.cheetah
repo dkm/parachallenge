@@ -194,6 +194,10 @@
 		  </select>
 
 		</fieldset>
+		<fieldset>
+		  <legend>Commentaires/Récit</legend>
+		  <textarea rows="10" cols="55" name="comments"></textarea>
+		</fieldset>
 		<input type="submit" value="Je valide ce vol de ouf!" />
 	      </form>
             </div>

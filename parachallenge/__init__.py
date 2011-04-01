@@ -64,7 +64,10 @@ class Pilot:
         return self.__unicode__().encode("utf-8")
 
 class Declaration:
-    def __init__(self, pilot, date, cross, last_balise, bonus_wpts, group=1, cat=LTF12_ENB):
+    def __init__(self, pilot, date, cross, last_balise,
+                 bonus_wpts, group=1, cat=LTF12_ENB,
+                 comments=None):
+
         self.pilot = unicode(pilot)
         self.date = unicode(date)
         self.cross = cross
@@ -72,7 +75,7 @@ class Declaration:
         self.bonus_wpts = bonus_wpts
         self.distance = 0
         self.points = 0
-
+        self.comments = comments
         self.group = group
         self.cat = cat
 
@@ -96,7 +99,8 @@ class Declaration:
               'distance' : self.distance,
               'points': self.points,
               'cat' : self.cat,
-              'group' : self.group}
+              'group' : self.group,
+              'comments' : self.comments}
         return m
 
     def __unicode__(self):
@@ -318,7 +322,13 @@ def loadDeclarationFromIni(filename, cross):
     else:
         bonus_wpts = []
 
-    return Declaration(pilot_name, decl_date, cross[decl_cross_id], decl_last_wpt, bonus_wpts)
+    if config.has_option('declaration', 'comments'):
+        comments = config.get('declaration', 'comments')
+    else:
+        comments = None
+
+    return Declaration(pilot_name, decl_date, cross[decl_cross_id],
+                       decl_last_wpt, bonus_wpts, comments)
 
 def loadFichesFromIni(filename, debug=False):
     config = ConfigParser.ConfigParser()

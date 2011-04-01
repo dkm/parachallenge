@@ -12,6 +12,7 @@ $group = $_POST['group'];
 $cat = $_POST['cat'];
 
 $bonus = $_POST['bonus'];
+$comments = $_POST['comments'];
 
 $valid = true;
  
@@ -57,7 +58,10 @@ $str = "[declaration] \n" .
        "last_balise : " . $lastb . "\n" .
        "cat : " . $cat . "\n" .
        "group : " . $group . "\n";
- 
+
+if ( $comments) {
+  $str .= "comments : " . $comments . "\n";
+}
 
 $str .= "bonus : ";
 
