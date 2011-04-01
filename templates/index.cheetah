@@ -124,15 +124,17 @@
         </div>
 
     <div id="column">
-            <h1 class="head">All</h1>
+            <h1 class="head">Vols disponibles</h1>
 	    <div class="border1">
             </div>
             <div class="border2">
             </div>
 	    <div class="contener1">
               <br/>
+#for $tk_name,$allX in $allcross.items()
+	      Depuis $tk_name : 
               <ul>
-#for $key,$val in $allcross.items()
+#for $key,$val in $allX.items()
                  <li>
 		   <a href="$val[4]">
 #set d="%d" % $val[0].distance
@@ -141,7 +143,7 @@
 		 </li>
 #end for
 	      </ul>
-
+#end for
             </div>
 
 	    <div class="photo">
