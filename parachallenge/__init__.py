@@ -104,7 +104,7 @@ class Declaration:
         return m
 
     def __unicode__(self):
-        s = u"||".join([u'Declaration',self.pilot, self.date, unicode(self.cross.fid), unicode(self.last_balise), unicode(self.distance), unicode(self.points)])
+        s = u"||".join([u'Declaration',self.pilot, self.date, unicode(self.cross.fid), unicode(self.last_balise), unicode(self.distance), unicode(self.points)], self.cat, self.group)
         return s
    
     def __str__(self):
@@ -328,7 +328,7 @@ def loadDeclarationFromIni(filename, cross):
         comments = None
 
     return Declaration(pilot_name, decl_date, cross[decl_cross_id],
-                       decl_last_wpt, bonus_wpts, comments)
+                       decl_last_wpt, bonus_wpts, decl_group, decl_cat, comments)
 
 def loadFichesFromIni(filename, debug=False):
     config = ConfigParser.ConfigParser()
