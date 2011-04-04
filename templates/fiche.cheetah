@@ -114,28 +114,29 @@
                 </a>
             </div>
             <div id="cart4">
-                <a href="link.html" class="carts">
+                <a href="reglement.html" class="carts">
                     <object>
                         <ul class="menu">
+                            <li>
+                                R
+                            </li>
+                            <li>
+                                É
+                            </li>
+                            <li>
+                                G
+                            </li>
                             <li>
                                 L
                             </li>
                             <li>
-                                I
-                            </li>
-                            <li>
-                                N
-                            </li>
-                            <li>
-                                K
-                            </li>
-                            <li>
-                                4
+                                .
                             </li>
                             <li>
                             </li>
                         </ul>
                     </object>
+
                 </a>
             </div>
         </div>

@@ -52,7 +52,7 @@ for fiche in fiches_fin.xreadlines():
     print >>htmlout, cross.toHTML(
         '/parachallenge/build-kml/%s.kml' % basename.replace('/', '__'),
         '/parachallenge/build-pdf/%s.pdf' % basename.replace('/', '__'),
-        'http://bordel.kataplop.net/')
+        'http://www.tire-clous.fr/')
 
     kmlout.close()
     rstout.close()
@@ -85,3 +85,9 @@ for k,l in fiches.items():
     fiche_pdf = 'build-pdf/%s.pdf' % l[1]
     pdf_rst = "rst2pdf final/%s -o final/%s " %( l[3], fiche_pdf)
     os.system(pdf_rst)
+
+
+t = Template(file='templates/reglement.cheetah')
+reglementout = open("final/reglement.html", "w")
+print >>reglementout, t
+reglementout.close()

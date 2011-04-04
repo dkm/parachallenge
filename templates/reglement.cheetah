@@ -2,27 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-      <title>Déclaration</title>
+      <title>Réglement</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="style/Simple_folder/style.css" />
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
-
-        <script type="text/javascript" src="js/jquery-1.5.min.js"></script>          
-        <script type="text/javascript" src="js/jquery-ui-1.8.10.custom.min.js"></script>
-	<script type="text/javascript">
-	  var fiches;
-	  $.parachallenge = {};
-
-	  $.ajax({
-	   async: false,
-	   dataType: "json",
-           url: "/parachallenge/fiches.json",
-           success: function(data){
-              $.parachallenge["fiches"] = data;
-           }
-	  });
-	</script>
     </head>
     <body>
         <div id="top">
@@ -112,7 +95,7 @@
                 </a>
             </div>
             <div id="cart4">
-                <a href="reglement.html" class="carts">
+                <a href="#" class="carts">
                     <object>
                         <ul class="menu">
                             <li>
@@ -134,75 +117,84 @@
                             </li>
                         </ul>
                     </object>
-
                 </a>
             </div>
         </div>
        <div id="whitespace">
         </div>
+
     <div id="column">
-            <h1 class="head">Formulaire de déclaration</h1>
+            <h1 class="head">Réglement</h1>
 	    <div class="border1">
             </div>
             <div class="border2">
             </div>
 	    <div class="contener1">
-              <br/>
-	      <form id="declform">
-		<fieldset>
-		<legend>Information sur le vol:</legend>
-		<label for="cross">Cross</label>:
-		<select id="cross" name="cross">
-		  <option value=""></option>
-#for $key,$val in $allcross.items()
-                   <option value="$val.fid">$val.name</option>
-#end for
-		</select>
-		<br />
 
-		<label for="lastwpt">Jusqu'à la balise </label>: 
-                <select id="lastwpt" name="lastwpt"></select>
-		<br/>
+	    <h2>CONDITIONS DE PARTICIPATION</h2>
 
-		<label>Balises bonus</label>:
-		<div id="bonuswpts"> </div>
-		<br/>
+	    <p>Le challenge est ouvert à tout pilote ayant pris une cotisation
+	    au club des Tire Clous du Grand Manti et disposant d'une assurance à
+	    jour. Dans le cas contraire aucun vol ne sera accepté.</p>	      
+	    
+	    <h2>REGLEMENTATION AERIENNE</h2>
+	    <p>La réglementation aérienne s’applique au challenge.</p>
 
-		<label for="date">Date</label>:
-		<input type="text" name="date" id="datepicker" />
+	    <p>Les vols ne respectant pas la réglementation aérienne ne sont pas
+	       pris en compte. </p>
 
-		</fieldset>
-		<fieldset>
-		  <legend>Information pilote</legend>
-		  <label for="login">Utilisateur</label>: <input type="text" name="login"/> <br />
-		  <label for="password">Mot de passe</label>:
-		  <input type="password" name="password"/><br />
-		  <legend>Certification de l'aile</legend>
-		  <select name="cat">
-		    <option value="1">LTF1 / EN A</option>
-		    <option value="2">LTF12 / EN B</option>
-		    <option value="3">LTF2 / EN C</option>
-		    <option value="4">LTF23 / EN D</option>
-		  </select>
-		  <legend>Nombre de pilote dans le groupe</legend>
-		  <select name="group">
-		    <option value="1">1</option>
-		    <option value="2">2</option>
-		    <option value="3">3</option>
-		    <option value="4">4</option>
-		    <option value="5">5</option>
-		    <option value="6">6</option>
-		  </select>
+	     <p>Ne vous mettez pas en danger ceci est un challenge amical.</p>
+	     
+	     <h2>DÉFINITION D'UN VOL DU CHALLENGE</h2>
+<p>Un vol du challenge s'entend du décollage à l'atterrissage, sans pause
+  autorisée. Aucune balises ne seront rajoutées à l'intérieur d'une fiche
+  existante.</p>
 
-		</fieldset>
-		<fieldset>
-		  <legend>Commentaires/Récit</legend>
-		  <textarea rows="10" cols="55" name="comments"></textarea>
-		</fieldset>
-		<input type="submit" value="Je valide ce vol de ouf!" />
-	      </form>
-            </div>
+	     <h2>PÉRIODE PRISE EN COMPTE</h2>
+	     <p>La saison du challenge s’étend  du mois de mars  à 15 jours
+	     avant l'AG.</p>
 
+	     <h2>Nombre de vols</h2>
+
+	     <p>Chaque pilote peut présenter autant de vols qu’il le désire,
+sachant que seuls les 5 meilleurs vols sont pris en compte pour le classement.
+Ces vols doivent être réalisés hors compétition.</p>
+
+	     <h2>TYPES DE VOLS</h2>
+	    <p>Chaque pilote doit déclarer un vol qui correspond à une fiche
+	      existante. Il accumulera les points par balises tournées et
+	      obtiendra un bonus s'il regagne l'atterro correspondant à la fiche
+	      en question.  Il peut faire le vol tout seul. Il aura juste à
+	      déclarer son vol en son nom. Mais également en groupe. Dans ce cas
+	      il déclarera son vol « en groupe » en précisant le nombre de
+	      personnes avec lui ce qui lui rapportera 20% de points en plus par
+	      personne. Chaque personne du groupe doit déclarer le vol pour
+	      comptabiliser ses points individuels. Des pénalités seront
+	      appliquées au pilotes volant sous des voiles plus
+	      performantes.</p>
+
+	     <h2>BALISES ET SECTEURS DE VIRAGE</h2>
+	    <p>Les balises doivent être survolées ou contournées. Les balises
+	      sont des points</p>
+
+	    <h2>DÉCLARATION DE VOL</h2>
+<p>
+Pour déclarer un vol il vous suffit de : 
+Aller sur <a href="declaration.html">la page de déclaration</a> et de
+renseigner les informations sur le trajet effectué : 
+</p>
+<ol>
+<li>Choisir quelle fiche à été réalisée</li>
+<li>Jusqu'à quelle balise</li>
+<li>La date du vol</li>
+<li>Vous identifier (même infos que sur le forum)</li>
+<li>Et si vous étiez plusieurs (les personnes doivent avoir fait exactement le même vol et avec pas plus d'une demi heure entre les deux)</li>
+<li>Valider :)</li>
+</ol>
+<p>
+Vous pouvez déclarer également depuis les fiches elle même.
+</p>
+</div>
 	    <div class="photo">
 	    </div>
     </div>
@@ -219,63 +211,5 @@
         2011 &copy; You
       </div>
     </div>
-
-<script>
-    \$('#datepicker').datepicker({dateFormat: 'dd-mm-yy', firstDay:1 });
-
-    \$('#declform').submit(function(){
-        var invalid_fields = new Array();
-    
-        \$(":input").each(function(index, elt){
-            var v = \$(this).val();
-            if (! v) {
-                invalid_fields.push(\$(this).attr('name'));
-            }
-        });
-
-        if (invalid_fields.length > 0) {
-           alert("Champs invalide(s): " + invalid_fields.join(", "));
-           return false;
-        }
-
-        $.post('decl.php', \$("#declform").serialize(), 
-               function(data){
-                    if (!data["result"]) {
-                      alert("Vol NON VALIDÉ :\n" + data["reason"]);
-                      return false;
-                    }
-
-                    \$('#declform').html('<div><p>Vol VALIDÉ. C\'est tout bon.<br/> Au cas ou, merci de garder ça dans un coin:' + data["file"] + '</p></div>');
-               });
-       return false;
-    });
-
-    \$("#cross").change( function () { 
-      
-      var options = '';
-      if (\$(this).val() == "") {
-            \$("#lastwpt").html("")
-            \$("#bonuswpts").html("N/A")
-            return;
-      }
-
-      var bonus = '';
-
-      var cross_fiche = $.parachallenge["fiches"][1][\$(this).val()][0];
-      for (var i = 0; i < cross_fiche["waypoints"].length; i++) {
-        if (!cross_fiche["waypoints"][i]['bonus']){
-          options += '<option value="' + i + '">' +
-                     cross_fiche["waypoints"][i]["name"]  + '</option>';
-        } else {
-          bonus += '<input type="checkbox" name="bonus[]" value="' +i+ '"/>' +
-                   cross_fiche["waypoints"][i]["name"] + ' <br />';
-        }
-      }
-      options += '<option value="' + cross_fiche["waypoints"].length + '">' + cross_fiche["landing"]["name"]  + '</option>';
-      \$("#lastwpt").html(options);
-      \$("#bonuswpts").html(bonus);
-    });
-</script>
-
     </body>
 </html>
