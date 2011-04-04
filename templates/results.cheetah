@@ -95,23 +95,23 @@
                 </a>
             </div>
             <div id="cart4">
-                <a href="link.html" class="carts">
+                <a href="reglement.html" class="carts">
                     <object>
                         <ul class="menu">
+                            <li>
+                                R
+                            </li>
+                            <li>
+                                É
+                            </li>
+                            <li>
+                                G
+                            </li>
                             <li>
                                 L
                             </li>
                             <li>
-                                I
-                            </li>
-                            <li>
-                                N
-                            </li>
-                            <li>
-                                K
-                            </li>
-                            <li>
-                                4
+                                .
                             </li>
                             <li>
                             </li>
@@ -124,7 +124,7 @@
         </div>
 
     <div id="column">
-            <h1 class="head">Classement général</h1>
+            <h1 class="head">Classement gÃ©nÃ©ral</h1>
 	    <div class="border1">
             </div>
             <div class="border2">
