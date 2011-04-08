@@ -41,7 +41,7 @@ wing_cert = {LTF1_ENA : 0.20,
              LTF2_ENC : -0.10,
              LTF23_END : -0.30}
 
-group_bonus = 0.05
+group_bonus = 0.2
 
 for fiche in fiches_fin.xreadlines():
     fpath = fiche.strip()
