@@ -78,7 +78,7 @@ t = Template(file='templates/results.cheetah')
 sorted_pilots.reverse()
 t.pilots = sorted_pilots
 # GMT + 1.
-t.date = (datetime.datetime.today() - datetime.timedelta(0,3600,0)).strftime("%d/%m/%Y %H:%M")
+t.date = (datetime.datetime.today() + datetime.timedelta(0,2*3600,0)).strftime("%d/%m/%Y %H:%M")
 resout = open("final/results.html", "w")
 print >>resout, t
 resout.close()
