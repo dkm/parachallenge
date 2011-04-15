@@ -114,7 +114,7 @@
                 </a>
             </div>
             <div id="cart4">
-                <a href="reglement.html" class="carts">
+                <a href="../reglement.html" class="carts">
                     <object>
                         <ul class="menu">
                             <li>
@@ -154,7 +154,7 @@
                
 	      <h2>Résumé</h2>
 	      <ul>
-		<li>Décolage: $cross.takeoff.name</li>
+		<li>Décollage: $cross.takeoff.name</li>
 		<li>Atterrissage: $cross.landing.name</li>
 		#set dist="%.2f" % $cross.distance
 		<li>Distance : $dist km</li>
@@ -172,7 +172,7 @@
 	      <h2>Parcours</h2>
 	      <form id="parcoursform">
 	      <ul>
-		<li>Décolage: $cross.takeoff.name</li>
+		<li>Décollage: $cross.takeoff.name</li>
 #set $prev=$cross.takeoff
 #for $w in $cross.waypoints
 #set dist="%.2f" % $w.distance_to($prev)
